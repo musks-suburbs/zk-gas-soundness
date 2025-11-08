@@ -86,6 +86,14 @@ def main() -> None:
         print(f"⛽ Base Fee: {w3.from_wei(base_fee, 'gwei')} gwei")
     print(f"💸 Current Gas Price: {w3.from_wei(gas_price, 'gwei')} gwei")
 
+    # ✅ New: Display approximate gas price in USD for clarity
+    try:
+        eth_usd = 3000  # Static estimate, can be updated or made dynamic later
+        gas_price_usd = (float(w3.from_wei(gas_price, 'gwei')) * 1e-9) * eth_usd
+        print(f"💰 Approximate Gas Price: ${gas_price_usd:.8f} per gas unit (at ${eth_usd}/ETH)")
+    except Exception:
+        print("⚠️ Unable to compute USD equivalent for gas price.")
+
     # Ratio check
     if base_fee:
         ratio = float(gas_price) / float(base_fee)
