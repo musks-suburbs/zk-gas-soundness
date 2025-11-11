@@ -76,6 +76,8 @@ def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: i
 def main():
     args = parse_args()
     w3 = connect(args.rpc)
+  print(f"📝 Proof cost audit started at: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
+print(f"💼 Contracting network: {network_name(int(w3.eth.chain_id))} (chainId {w3.eth.chain_id})")
     hashes = read_tx_hashes(args.file)
     results = [audit_tx(w3, h, args.tip_threshold, args.gas_used_threshold) for h in hashes]
 
