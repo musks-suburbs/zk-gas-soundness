@@ -62,6 +62,7 @@ def main():
     network = network_name(chain_id)
 
     latest = w3.eth.get_block("latest")
+    print(f"🕒 Fetched latest block: {latest.number} at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(latest.timestamp))} UTC")
     base_fee_wei = int(latest.get("baseFeePerGas", 0))
     if base_fee_wei == 0:
         print("⚠️  This network may not support EIP-1559 (no baseFeePerGas).")
