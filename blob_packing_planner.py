@@ -132,6 +132,8 @@ def main():
         sizes = read_sizes_file(args.file)
     sizes = [max(0, s) for s in sizes]
     total_bytes = sum(sizes)
+if any(s > BLOB_SIZE_BYTES for s in sizes):
+    print("⚠️  Warning: One or more payloads exceed the maximum blob size and will be split.")
 
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
