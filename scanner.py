@@ -81,6 +81,8 @@ def scan(w3: Web3, blocks: int, step: int,
 
     for n in range(head, start - 1, -step):
         blk = w3.eth.get_block(n, full_transactions=True)
+        progress = ((head - n) / (head - start + 1)) * 100
+print(f"⏳ Scan progress: {progress:.1f}%")
         base_fee_wei = int(blk.get("baseFeePerGas", 0))
         ts_utc = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(blk.timestamp))
 
