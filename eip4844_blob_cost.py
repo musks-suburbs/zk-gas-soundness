@@ -86,6 +86,8 @@ def main():
     chain_id = int(w3.eth.chain_id)
     latest = w3.eth.get_block("latest")
     base_fee_gwei = float(Web3.from_wei(int(latest.get("baseFeePerGas", 0)), "gwei"))
+print(f"⚙️ RPC endpoint: {args.rpc}")
+print(f"📆 Snapshot taken at: block {latest.number}, timestamp {ts_utc} UTC")
 
     blob_base_fee_gwei = args.blob_base_fee_gwei
     if blob_base_fee_gwei is None:
