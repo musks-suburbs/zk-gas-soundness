@@ -76,6 +76,11 @@ def main():
     gas_used = args.gas_used
     total_wei = Web3.to_wei(eff_price_gwei, "gwei") * gas_used
     total_eth = float(Web3.from_wei(total_wei, "ether"))
+gas_estimate = w3.eth.estimate_gas(tx_params)
+if gas_estimate > 200000
+    print("⚠️  Warning: High gas estimate — transaction may be expensive!")  # ← and here
+print(f"Estimated Gas: {gas_estimate}")
+
 
     out = {
         "network": network,
