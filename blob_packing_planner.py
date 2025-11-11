@@ -132,6 +132,8 @@ def main():
         sizes = read_sizes_file(args.file)
     sizes = [max(0, s) for s in sizes]
     total_bytes = sum(sizes)
+    print(f"📊 Payload size summary: min={min(sizes)} bytes, max={max(sizes)} bytes")
+
 
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
