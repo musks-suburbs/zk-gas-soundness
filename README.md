@@ -4,6 +4,16 @@
 **zk-gas-soundness** is a CLI tool that monitors gas fee soundness by comparing the **base fee per gas** (EIP-1559) against the **current gas price** reported by an RPC node.  
 It provides fast insight into network fee health and can detect anomalies or congestion across EVM-compatible chains, including those used by **Aztec**, **Zama**, and other zk-rollup systems.
 
+### Getting Started
+1. Clone the repository  
+   `git clone https://github.com/musks-suburbs/zk-gas-soundness.git`
+
+2. Install dependencies  
+   `pip install -r requirements.txt`
+
+3. Basic usage example  
+   `python app.py --rpc https://mainnet.infura.io/v3/<API_KEY> --tx 0x...`
+
 ## Features
 - Fetch base fee, gas price, and block number  
 - Compute the gas price to base fee ratio  
