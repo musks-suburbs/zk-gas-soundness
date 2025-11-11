@@ -58,6 +58,8 @@ def parse_args() -> argparse.Namespace:
 def main():
     args = parse_args()
     w3 = connect(args.rpc)
+    current_block = w3.eth.block_number
+print(f"🧱 Current Block: {current_block}")
     chain_id = int(w3.eth.chain_id)
     network = network_name(chain_id)
 
