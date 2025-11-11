@@ -85,6 +85,9 @@ def main():
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
     latest = w3.eth.get_block("latest")
+    print(f"📥 Inputs → gasUsed={args.gas_used}, blobs={args.blobs}, calldataBytes={args.calldata_bytes}")
+print(f"🔧 Using tip={args.tip_gwei} Gwei")
+
     base_fee_gwei = float(Web3.from_wei(int(latest.get("baseFeePerGas", 0)), "gwei"))
 
     blob_base_fee_gwei = args.blob_base_fee_gwei
