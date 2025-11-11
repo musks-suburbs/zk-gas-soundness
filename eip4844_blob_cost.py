@@ -83,6 +83,8 @@ def parse_args() -> argparse.Namespace:
 def main():
     args = parse_args()
     w3 = connect(args.rpc)
+    print(f"🧱 Current block: {w3.eth.block_number} | ⏰ {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
+
     chain_id = int(w3.eth.chain_id)
     latest = w3.eth.get_block("latest")
     base_fee_gwei = float(Web3.from_wei(int(latest.get("baseFeePerGas", 0)), "gwei"))
