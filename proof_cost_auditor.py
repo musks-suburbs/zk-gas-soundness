@@ -76,8 +76,14 @@ def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: i
 def main():
     args = parse_args()
     w3 = connect(args.rpc)
+  start_time = time.time()
+print("⏱️  Audit started...")
+
     hashes = read_tx_hashes(args.file)
     results = [audit_tx(w3, h, args.tip_threshold, args.gas_used_threshold) for h in hashes]
+
+print_results(results)
+print(f"✅ Audit completed in {time.time() - start_time:.2f} seconds.")
 
     if args.json:
         print(json.dumps(results, indent=2, sort_keys=True))
