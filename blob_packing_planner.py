@@ -132,6 +132,9 @@ def main():
         sizes = read_sizes_file(args.file)
     sizes = [max(0, s) for s in sizes]
     total_bytes = sum(sizes)
+if total_bytes == 0:
+    print("⚠️  No payload data provided — nothing to pack or estimate.")
+    sys.exit(0)
 
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
