@@ -93,6 +93,8 @@ def main():
 
     # Execution gas cost (EIP-1559): (base + tip) * gas_used
     eff_gwei = base_fee_gwei + args.tip_gwei
+    print(f"🧾 Tip-to-base fee ratio: {round((args.tip_gwei / base_fee_gwei) * 100, 2)}%")
+
     exec_cost_eth = float(Web3.from_wei(Web3.to_wei(eff_gwei, "gwei") * max(args.gas_used, 0), "ether"))
 
     # Blob data cost: blob_base_fee * blobs * (data gas per blob == 1 unit)
