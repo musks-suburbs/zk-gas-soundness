@@ -142,6 +142,7 @@ def main():
     blob_base_fee_gwei = args.blob_base_fee_gwei
     if blob_base_fee_gwei is None:
         blob_base_fee_gwei = try_get_blob_base_fee_gwei(w3)
+print(f"💰 Estimating total cost with base fee {base_fee_gwei:.2f} Gwei and blob base fee {blob_base_fee_gwei:.2f} Gwei...")
 
     # Packing
     bins = first_fit_decreasing_binpack(sizes, BLOB_SIZE_BYTES)
