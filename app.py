@@ -47,6 +47,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     start = time.time()
     args = parse_args()
+print(f"🕒 Execution start time (UTC): {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}")
 
     if not args.rpc.startswith("http"):
         print("❌ Invalid RPC URL format. It must start with 'http' or 'https'.")
