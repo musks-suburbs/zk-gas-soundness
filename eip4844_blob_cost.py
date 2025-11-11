@@ -82,6 +82,9 @@ def parse_args() -> argparse.Namespace:
 
 def main():
     args = parse_args()
+    args.gas_used = max(0, args.gas_used)
+args.calldata_bytes = max(0, args.calldata_bytes)
+
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
     latest = w3.eth.get_block("latest")
