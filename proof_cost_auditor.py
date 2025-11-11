@@ -75,6 +75,9 @@ def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: i
 
 def main():
     args = parse_args()
+  print(f"🐍 Python version: {sys.version.split()[0]}")
+print(f"🛠️ Audit thresholds → Tip > {args.tip_threshold} Gwei | GasUsed > {args.gas_used_threshold}")
+
     w3 = connect(args.rpc)
     hashes = read_tx_hashes(args.file)
     results = [audit_tx(w3, h, args.tip_threshold, args.gas_used_threshold) for h in hashes]
