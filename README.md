@@ -4,6 +4,11 @@
 **zk-gas-soundness** is a CLI tool that monitors gas fee soundness by comparing the **base fee per gas** (EIP-1559) against the **current gas price** reported by an RPC node.  
 It provides fast insight into network fee health and can detect anomalies or congestion across EVM-compatible chains, including those used by **Aztec**, **Zama**, and other zk-rollup systems.
 
+## What this tool does:
+- Evaluates gas usage, fees, and transaction soundness for zk-proof & rollup systems.
+- Provides cost estimators (EIP-4844 blob vs calldata), auditing tools, and batch scanning utilities.
+- Facilitates network diagnostics, gas-efficiency tracking, and provider consistency checks.
+
 ## Features
 - Fetch base fee, gas price, and block number  
 - Compute the gas price to base fee ratio  
