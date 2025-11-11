@@ -60,6 +60,9 @@ def main() -> None:
     print(f"🕒 Timestamp: {datetime.utcnow().isoformat()}Z")
     print("🔧 zk-gas-soundness")
     print(f"🔗 RPC: {args.rpc}")
+w3 = connect(args.rpc)
+gas_price = w3.eth.gas_price     # ← paste here
+print(f"⛽ Current Gas Price: {Web3.from_wei(gas_price, 'gwei'):.2f} Gwei")  # ← and here
 
     # Fetch chain ID and network name
     try:
