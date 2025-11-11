@@ -154,6 +154,9 @@ def main():
         print(f"   • Blobs (data)    : {out['costsETH']['blobs']}")
     if out["costsETH"]["calldata"] is not None:
         print(f"   • Calldata (data) : {out['costsETH']['calldata']}")
+        # only show ratio when both are present and calldata cost > 0
+if calld_cost_eth and blob_cost_eth: print(f"📊 Ratio blob-to-calldata: {round(blob_cost_eth / calld_cost_eth, 2)}×")
+
     if out["notes"]:
         print("ℹ️  Notes:")
         for n in out["notes"]:
