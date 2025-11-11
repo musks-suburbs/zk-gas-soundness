@@ -81,6 +81,9 @@ def scan(w3: Web3, blocks: int, step: int,
 
     for n in range(head, start - 1, -step):
         blk = w3.eth.get_block(n, full_transactions=True)
+        block_time = time.time() - blk.timestamp  # approximate latency
+print(f"📦 Block {blk.number} fetched in ~{block_time:.2f}s")  
+
         base_fee_wei = int(blk.get("baseFeePerGas", 0))
         ts_utc = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(blk.timestamp))
 
