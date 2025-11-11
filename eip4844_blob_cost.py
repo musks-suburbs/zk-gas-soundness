@@ -83,6 +83,8 @@ def parse_args() -> argparse.Namespace:
 def main():
     args = parse_args()
     w3 = connect(args.rpc)
+    print(f"🌐 Connected to network ID: {w3.eth.chain_id}")
+print(f"📡 RPC Endpoint: {args.rpc}")
     chain_id = int(w3.eth.chain_id)
     latest = w3.eth.get_block("latest")
     base_fee_gwei = float(Web3.from_wei(int(latest.get("baseFeePerGas", 0)), "gwei"))
