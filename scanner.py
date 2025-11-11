@@ -81,6 +81,8 @@ def scan(w3: Web3, blocks: int, step: int,
 
     for n in range(head, start - 1, -step):
         blk = w3.eth.get_block(n, full_transactions=True)
+        tx_count = len(blk.transactions)
+        print(f"🧾 Block {blk.number} contains {tx_count} transactions")
         base_fee_wei = int(blk.get("baseFeePerGas", 0))
         ts_utc = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(blk.timestamp))
 
