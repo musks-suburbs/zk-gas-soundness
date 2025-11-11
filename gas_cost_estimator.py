@@ -58,6 +58,7 @@ def parse_args() -> argparse.Namespace:
 def main():
     args = parse_args()
     w3 = connect(args.rpc)
+    print(f"🔗 Connected to RPC endpoint: {args.rpc}")
     chain_id = int(w3.eth.chain_id)
     network = network_name(chain_id)
 
