@@ -58,6 +58,8 @@ def parse_args() -> argparse.Namespace:
 def main():
     args = parse_args()
     w3 = connect(args.rpc)
+    base_fee = w3.eth.get_block("latest").get("baseFeePerGas", 0)
+print(f"⛽ Current Base Fee: {Web3.from_wei(base_fee, 'gwei'):.2f} Gwei")
     chain_id = int(w3.eth.chain_id)
     network = network_name(chain_id)
 
