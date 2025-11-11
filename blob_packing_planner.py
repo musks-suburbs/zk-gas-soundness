@@ -132,6 +132,10 @@ def main():
         sizes = read_sizes_file(args.file)
     sizes = [max(0, s) for s in sizes]
     total_bytes = sum(sizes)
+for s in sizes:
+    if s > BLOB_SIZE_BYTES:
+        print(f"⚠️  Payload size {s} bytes exceeds single-blob capacity ({BLOB_SIZE_BYTES} bytes) and will span multiple blobs")
+        break
 
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
