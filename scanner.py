@@ -7,7 +7,7 @@ It:
 - Computes per-tx:
     • effectiveGasPrice (Gwei)
     • priority tip (effective - baseFee) in Gwei (legacy fallback supported)
-    • gas efficiency (gasUsed / gasLimit * 100)
+    •  (gasUsed / gasLimit * 100)
     • total fee (ETH)
 - Flags outliers if they breach thresholds (configurable).
 - Prints a concise table, or JSON via --json.
@@ -57,8 +57,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--blocks", type=int, default=300, help="How many recent blocks to scan (default 300)")
     p.add_argument("--step", type=int, default=3, help="Sample every Nth block for speed (default 3)")
     p.add_argument("--tip-gwei-th", type=float, default=5.0, help="Flag if tip >= this Gwei (default 5)")
-    p.add_argument("--eff-low", type=float, default=20.0, help="Flag if gas efficiency <= this % (default 20)")
-    p.add_argument("--eff-high", type=float, default=99.5, help="Flag if gas efficiency >= this % (default 99.5)")
+    p.add_argument("--eff-low", type=float, default=20.0, help="Flag if  <= this % (default 20)")
+    p.add_argument("--eff-high", type=float, default=99.5, help="Flag if  >= this % (default 99.5)")
     p.add_argument("--fee-eth-th", type=float, default=0.1, help="Flag if total fee >= this ETH (default 0.1)")
     p.add_argument("--max-report", type=int, default=100, help="Max outliers to show (default 100)")
     p.add_argument("--json", action="store_true", help="Print JSON instead of text")
@@ -96,8 +96,11 @@ def scan(w3: Web3, blocks: int, step: int,
             gas_used = int(rcpt.gasUsed)
             gas_limit = int(tx.get("gas", gas_used))
             eff = (gas_used / gas_limit * 100.0) if gas_limit else None
+            
 
             eff_price_wei = getattr(rcpt, "effectiveGasPrice", None)
+            eff_pct = f"{round(gas_eff,2)}%" if gas_eff is not None else "-"
+
             if eff_price_wei is None:
                 eff_price_wei = int(tx.get("gasPrice", 0))
             total_fee_eth = float(Web3.from_wei(int(eff_price_wei) * gas_used, "ether"))
