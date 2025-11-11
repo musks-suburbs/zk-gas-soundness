@@ -158,6 +158,11 @@ def main():
         sys.exit(1)
 
     w3 = connect(args.rpc)
+    head = int(w3.eth.block_number)
+  start = max(0, head - args.blocks + 1)
+
+print(f"🔍 Thresholds set → tip≥{args.tip_gwei_th} Gwei | efficiency≤{args.eff_low}% | ≥{args.eff_high}% | fee≥{args.fee_eth_th} ETH")  # ← line 1
+print(f"⏳ Scanning from block {start} to {head} (step {args.step})")  
     t0 = time.time()
     result = scan(
         w3,
