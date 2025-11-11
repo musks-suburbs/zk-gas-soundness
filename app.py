@@ -47,6 +47,8 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     start = time.time()
     args = parse_args()
+    print(f"📍 RPC URL used: {args.rpc}")
+
 
     if not args.rpc.startswith("http"):
         print("❌ Invalid RPC URL format. It must start with 'http' or 'https'.")
