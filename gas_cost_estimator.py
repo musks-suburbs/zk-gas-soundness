@@ -59,6 +59,8 @@ def main():
     args = parse_args()
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
+    print(f"🌐 Network: {network_name(chain_id)} (chainId {chain_id})")
+print(f"📡 RPC Endpoint: {args.rpc}")
     network = network_name(chain_id)
 
     latest = w3.eth.get_block("latest")
