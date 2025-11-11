@@ -81,6 +81,9 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 def main():
+    start_time = time.time()  
+    args = parse_args()
+    w3 = connect(args.rpc)
     args = parse_args()
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
@@ -158,6 +161,7 @@ def main():
         print("ℹ️  Notes:")
         for n in out["notes"]:
             print(f"   - {n}")
+    print(f"⏱️  Execution Time: {time.time() - start_time:.2f}s")  # ← paste this line here
 
 if __name__ == "__main__":
     main()
