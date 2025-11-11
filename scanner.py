@@ -102,6 +102,8 @@ def scan(w3: Web3, blocks: int, step: int,
                 eff_price_wei = int(tx.get("gasPrice", 0))
             total_fee_eth = float(Web3.from_wei(int(eff_price_wei) * gas_used, "ether"))
             tip_gwei = tx_tip_gwei(tx, base_fee_wei, rcpt)
+            tip_gwei = float(Web3.from_wei(max(0, int(eff_price_wei) - int(base_fee_wei or 0)), "gwei"))
+
 
             # Flag outliers by thresholds
             flags = []
