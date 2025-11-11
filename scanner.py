@@ -158,6 +158,8 @@ def main():
         sys.exit(1)
 
     w3 = connect(args.rpc)
+    print(f"🧪 Starting scan at: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
+    print(f"📊 Target chain ID: {w3.eth.chain_id}")
     t0 = time.time()
     result = scan(
         w3,
