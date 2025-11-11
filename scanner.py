@@ -158,6 +158,9 @@ def main():
         sys.exit(1)
 
     w3 = connect(args.rpc)
+    if not w3.is_connected():
+    print("⚠️  RPC connection unstable — results may be incomplete.")
+
     t0 = time.time()
     result = scan(
         w3,
