@@ -76,6 +76,8 @@ def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: i
 def main():
     args = parse_args()
     w3 = connect(args.rpc)
+  if not w3.is_connected():
+    print("⚠️  RPC connection lost — some transactions may not be processed correctly.")
     hashes = read_tx_hashes(args.file)
     results = [audit_tx(w3, h, args.tip_threshold, args.gas_used_threshold) for h in hashes]
 
