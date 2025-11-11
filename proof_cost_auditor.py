@@ -77,6 +77,9 @@ def main():
     args = parse_args()
     w3 = connect(args.rpc)
     hashes = read_tx_hashes(args.file)
+  print(f"🔍 Auditing {len(hashes)} proof transactions…")
+t0 = time.time()
+
     results = [audit_tx(w3, h, args.tip_threshold, args.gas_used_threshold) for h in hashes]
 
     if args.json:
