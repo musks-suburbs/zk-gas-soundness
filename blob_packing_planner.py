@@ -146,6 +146,8 @@ def main():
     # Packing
     bins = first_fit_decreasing_binpack(sizes, BLOB_SIZE_BYTES)
     blob_count = len(bins)
+print(f"📊 Total payload sizes: {total_bytes} bytes across {len(sizes)} items")
+print(f"🧮 Estimated blob count from packing: {blob_count}")
 
     # Costs
     eff_gwei = base_fee_gwei + args.tip_gwei
