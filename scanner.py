@@ -158,6 +158,8 @@ def main():
         sys.exit(1)
 
     w3 = connect(args.rpc)
+    print(f"🐍 Python version: {sys.version.split()[0]}, Web3.py version: {Web3.__version__}")
+
     t0 = time.time()
     result = scan(
         w3,
