@@ -57,6 +57,8 @@ def parse_args() -> argparse.Namespace:
 
 def main():
     args = parse_args()
+    start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+    print(f"🕓 Estimation started at: {start_time} UTC")  # ← paste here
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
     network = network_name(chain_id)
