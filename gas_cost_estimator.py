@@ -75,7 +75,10 @@ def main():
     eff_price_gwei = base_fee_gwei + tip_gwei
     gas_used = args.gas_used
     total_wei = Web3.to_wei(eff_price_gwei, "gwei") * gas_used
-    total_eth = float(Web3.from_wei(total_wei, "ether"))
+   total_eth = float(Web3.from_wei(total_wei, "ether"))
+if total_eth < 0.001:  
+    print("💰 Note: This transaction has a very low estimated cost — might be a test or small transfer.")  # ← paste here
+
 
     out = {
         "network": network,
