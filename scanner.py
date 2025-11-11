@@ -158,6 +158,11 @@ def main():
         sys.exit(1)
 
     w3 = connect(args.rpc)
+    head = int(w3.eth.block_number)
+    start = max(0, head - args.blocks + 1)
+
+print(f"🔧 RPC endpoint used: {args.rpc}")                # ← paste here
+print(f"⏳ Scanning blocks from {start} to {head}"
     t0 = time.time()
     result = scan(
         w3,
