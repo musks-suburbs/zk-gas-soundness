@@ -158,6 +158,9 @@ def main():
         sys.exit(1)
 
     w3 = connect(args.rpc)
+    if abs(w3.eth.block_number - w3.eth.syncing.get("currentBlock", w3.eth.block_number)) > 50:
+    print("⚠️  RPC node may be out of sync — results could be stale.")
+
     t0 = time.time()
     result = scan(
         w3,
