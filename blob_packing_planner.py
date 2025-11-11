@@ -142,6 +142,8 @@ def main():
     blob_base_fee_gwei = args.blob_base_fee_gwei
     if blob_base_fee_gwei is None:
         blob_base_fee_gwei = try_get_blob_base_fee_gwei(w3)
+if blob_base_fee_gwei is None and (sum(sizes) > 0):
+    print("⚠️  Blob base fee not available from RPC; pass --blob-base-fee-gwei to estimate blob cost.")
 
     # Packing
     bins = first_fit_decreasing_binpack(sizes, BLOB_SIZE_BYTES)
