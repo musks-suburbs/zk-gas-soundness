@@ -100,6 +100,10 @@ def scan(w3: Web3, blocks: int, step: int,
             eff_price_wei = getattr(rcpt, "effectiveGasPrice", None)
             if eff_price_wei is None:
                 eff_price_wei = int(tx.get("gasPrice", 0))
+
+gas_limit = int(tx.get("gas", 0))
+gas_eff = (gas_used / gas_limit * 100.0) if gas_limit else None
+
             total_fee_eth = float(Web3.from_wei(int(eff_price_wei) * gas_used, "ether"))
             tip_gwei = tx_tip_gwei(tx, base_fee_wei, rcpt)
 
