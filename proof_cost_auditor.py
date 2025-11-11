@@ -59,11 +59,14 @@ def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: i
     eff_price = int(rcpt.effectiveGasPrice if hasattr(rcpt, "effectiveGasPrice") else tx.gasPrice)
     tip_per_gas = eff_price - base_fee
     gas_used = int(rcpt.gasUsed)
-    flags = []
-    if tip_per_gas > Web3.to_wei(tip_threshold, "gwei"):
-        flags.append("High tip")
-    if gas_used > gas_used_threshold:
-        flags.append("High gas used")
+flags = []
+if tip_per_gas > Web3.to_wei(tip_threshold, "gwei"):
+    flags.append("High tip")
+if gas_used > gas_used_threshold:
+    flags.append("High gas used")
+
+cost_eth = float(Web3.from_wei(eff_price * gas_used, "ether"))
+print(f"💰 Estimated cost of this proof tx: {round(cost_eth, 6)} ETH – flags: {flags or 'none'}")
     return {
         "txHash": tx_hash,
         "blockNumber": int(rcpt.blockNumber),
