@@ -158,6 +158,9 @@ def main():
         sys.exit(1)
 
     w3 = connect(args.rpc)
+    print(f"⚙️  Using RPC: {args.rpc}")
+print(f"🚀 Scan initiated on {network_name(w3.eth.chain_id)} (chainId {w3.eth.chain_id})")
+
     t0 = time.time()
     result = scan(
         w3,
