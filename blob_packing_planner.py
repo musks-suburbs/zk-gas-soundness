@@ -124,6 +124,8 @@ def parse_args() -> argparse.Namespace:
 
 def main():
     args = parse_args()
+    args.gas_used = max(0, int(args.gas_used))
+
 
     # Read and validate sizes
     if args.sizes:
