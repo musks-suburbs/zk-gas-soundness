@@ -76,6 +76,8 @@ def scan(w3: Web3, blocks: int, step: int,
          max_report: int) -> Dict[str, Any]:
     head = int(w3.eth.block_number)
     start = max(0, head - blocks + 1)
+   if args.blocks > 2000 and args.step < 5:
+    args.step = 5
     outliers: List[Dict[str, Any]] = []
     scanned = 0
 
