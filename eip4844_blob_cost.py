@@ -143,6 +143,9 @@ def main():
         return
 
     # Pretty print
+    print(f"📌 Data mode: blobs={args.blobs}  calldataBytes={args.calldata_bytes}")
+    print(f"📅 Snapshot block: {latest.number}  time: {out['timestampUtc']}")
+
     print(f"🌐 {out['network']} (chainId {out['chainId']})  🧱 block {out['blockNumber']}  🕒 {out['timestampUtc']} UTC")
     print(f"⛽ Base fee: {out['baseFeeGwei']} Gwei   🎁 Tip: {out['tipGwei']} Gwei   ⚙️ Eff: {out['effectivePriceGwei']} Gwei")
     if out["blobBaseFeeGwei"] is not None:
