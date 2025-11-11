@@ -147,6 +147,8 @@ def main():
     print(f"⛽ Base fee: {out['baseFeeGwei']} Gwei   🎁 Tip: {out['tipGwei']} Gwei   ⚙️ Eff: {out['effectivePriceGwei']} Gwei")
     if out["blobBaseFeeGwei"] is not None:
         print(f"🫧 Blob base fee: {out['blobBaseFeeGwei']} Gwei")
+        print(f"📏 Blobs size per unit: {BLOB_SIZE_BYTES} bytes/blob")
+print(f"🔍 Call data cost equivalent shown when `--calldata-bytes` used")
     print(f"📥 Inputs → gasUsed={args.gas_used}  blobs={args.blobs}  calldataBytes={args.calldata_bytes}")
     print("— Estimated Costs (ETH) —")
     print(f"   • Execution       : {out['costsETH']['execution']}")
