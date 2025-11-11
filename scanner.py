@@ -153,6 +153,9 @@ def scan(w3: Web3, blocks: int, step: int,
 
 def main():
     args = parse_args()
+if args.blocks <= 0 or args.step <= 0:
+    print("❌ --blocks and --step must be > 0"); sys.exit(1)
+
     if args.blocks <= 0 or args.step <= 0:
         print("❌ --blocks and --step must be > 0", file=sys.stderr)
         sys.exit(1)
