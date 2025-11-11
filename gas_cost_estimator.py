@@ -67,10 +67,13 @@ def main():
         print("⚠️  This network may not support EIP-1559 (no baseFeePerGas).")
     base_fee_gwei = float(Web3.from_wei(base_fee_wei, "gwei"))
 
-    if args.tip_percent is not None:
-        tip_gwei = base_fee_gwei * args.tip_percent
-    else:
-        tip_gwei = args.tip_gwei
+   if args.tip_percent is not None:
+    tip_gwei = base_fee_gwei * args.tip_percent
+else:
+    tip_gwei = args.tip_gwei
+if tip_gwei == 0:  
+    print("💤 No tip provided — transaction may confirm slowly on congested networks.")  # ← paste here
+
 
     eff_price_gwei = base_fee_gwei + tip_gwei
     gas_used = args.gas_used
