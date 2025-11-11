@@ -76,6 +76,8 @@ def main():
     gas_used = args.gas_used
     total_wei = Web3.to_wei(eff_price_gwei, "gwei") * gas_used
     total_eth = float(Web3.from_wei(total_wei, "ether"))
+    if args.eth_price is not None: print(f"💱 Implicit ETH-USD: ${round(total_eth * args.eth_price, 2)}")
+
 
     out = {
         "network": network,
