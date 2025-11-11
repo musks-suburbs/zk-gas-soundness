@@ -202,6 +202,8 @@ def main():
         print(f"🫧 Blob base fee: {result['blobBaseFeeGwei']} Gwei")
     print(f"📦 Total payload: {total_bytes} bytes  →  Blobs needed: {blob_count}")
     print("— Estimated Costs (ETH) —")
+    print(f"🕒 Calculation performed at: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
+
     print(f"   • Execution       : {result['costsETH']['execution']}")
     if result["costsETH"]["blobs"] is not None:
         print(f"   • Blobs (packed)  : {result['costsETH']['blobs']}")
