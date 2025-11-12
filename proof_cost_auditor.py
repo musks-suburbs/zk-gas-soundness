@@ -82,6 +82,10 @@ def main():
 
     if args.json:
         print(json.dumps(results, indent=2, sort_keys=True))
+      return
+        if args.eth_price:
+    print(f"💵 Estimated USD cost: ${round(total_eth * args.eth_price, 2)}")
+
     else:
         print(f"🌐 {network_name(int(w3.eth.chain_id))} (chainId {w3.eth.chain_id})")
         print("🔍 Proof cost audit results:")
