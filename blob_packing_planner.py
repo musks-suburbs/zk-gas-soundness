@@ -138,6 +138,8 @@ def main():
     latest = w3.eth.get_block("latest")
     ts_utc = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(latest.timestamp))
     base_fee_gwei = float(Web3.from_wei(int(latest.get("baseFeePerGas", 0)), "gwei"))
+from web3.middleware import geth_poa_middleware
+w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
     blob_base_fee_gwei = args.blob_base_fee_gwei
     if blob_base_fee_gwei is None:
