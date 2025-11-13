@@ -83,8 +83,9 @@ def main() -> None:
 
     print(f"🧱 Block: {data['block_number']}")
     if base_fee is not None:
-        print(f"⛽ Base Fee: {w3.from_wei(base_fee, 'gwei')} gwei")
-    print(f"💸 Current Gas Price: {w3.from_wei(gas_price, 'gwei')} gwei")
+     print(f"⛽ Base Fee: {float(w3.from_wei(base_fee, 'gwei')):.2f} gwei")
+print(f"💸 Current Gas Price: {float(w3.from_wei(gas_price, 'gwei')):.2f} gwei")
+
 
     # Ratio check
     if base_fee:
