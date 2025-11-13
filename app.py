@@ -6,6 +6,8 @@ import time
 import argparse
 from datetime import datetime
 from web3 import Web3
+print(f"🔧 Web3.py version: {Web3.__version__}")
+
 
 DEFAULT_RPC = os.environ.get("RPC_URL", "https://mainnet.infura.io/v3/YOUR_INFURA_KEY")
 
