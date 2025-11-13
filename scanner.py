@@ -95,7 +95,10 @@ def scan(w3: Web3, blocks: int, step: int,
 
             gas_used = int(rcpt.gasUsed)
             gas_limit = int(tx.get("gas", gas_used))
-            eff = (gas_used / gas_limit * 100.0) if gas_limit else None
+       # after you compute gas_limit/gas_used (inside the per-tx loop)
+gas_limit = int(tx.get("gas", 0))
+gas_eff = (gas_used / gas_limit * 100.0) if gas_limit else None
+
 
             eff_price_wei = getattr(rcpt, "effectiveGasPrice", None)
             if eff_price_wei is None:
