@@ -52,7 +52,10 @@ def main() -> None:
         print("❌ Invalid RPC URL format. It must start with 'http' or 'https'.")
         sys.exit(1)
 
+   if not w3.is_connected():
+    time.sleep(1)
     w3 = Web3(Web3.HTTPProvider(args.rpc, request_kwargs={"timeout": args.timeout}))
+
     if not w3.is_connected():
         print("❌ RPC connection failed. Check RPC_URL or --rpc.")
         sys.exit(1)
