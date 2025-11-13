@@ -102,6 +102,12 @@ def main() -> None:
         output = {
             "rpc": args.rpc,
             "chain_id": chain_id,
+            try:
+    balance = w3.eth.get_balance(w3.eth.accounts[0]) if w3.eth.accounts else 0
+    print(f"💰 Node ETH balance: {w3.from_wei(balance, 'ether'):.4f} ETH")
+except:
+    print("💰 Node balance unavailable.")
+
             "network_name": network_name,
             "timestamp_utc": datetime.utcnow().isoformat() + "Z",
             "block_number": data["block_number"],
