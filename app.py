@@ -116,3 +116,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+if base_fee is None:
+    print("⚠️ This chain does not support EIP-1559 (no baseFeePerGas).")
