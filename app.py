@@ -116,3 +116,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+usd_estimate = float(w3.from_wei(gas_price, 'gwei')) * 0.000000001  # Placeholder multiplier
+print(f"💵 Gas (est USD): ~{usd_estimate:.6f} USD")
