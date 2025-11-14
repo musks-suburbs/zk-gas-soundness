@@ -44,6 +44,9 @@ def connect(rpc: str) -> Web3:
         print("❌ Failed to connect to RPC.", file=sys.stderr)
         sys.exit(1)
     # (Optional) better compatibility on some L2/PoA chains:
+    from web3.middleware import geth_poa_middleware
+w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+
     try:
         from web3.middleware import geth_poa_middleware
         w3.middleware_onion.inject(geth_poa_middleware, layer=0)
