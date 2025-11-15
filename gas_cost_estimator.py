@@ -57,7 +57,19 @@ def parse_args() -> argparse.Namespace:
 
 def main():
     args = parse_args()
+
+    if "your_api_key" in args.rpc:
+        print(
+            "❌ RPC URL appears to still contain the placeholder 'your_api_key'. "
+            "Please set RPC_URL or pass --rpc with a real endpoint.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+  if args.gas_used <= 0:
+        print(f"❌ --gas-used must be > 0 (got {args.gas_used})", file=sys.stderr)
+        sys.exit(1)
     w3 = connect(args.rpc)
+
     chain_id = int(w3.eth.chain_id)
     network = network_name(chain_id)
 
