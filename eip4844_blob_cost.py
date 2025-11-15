@@ -137,6 +137,9 @@ def main():
         out["notes"].append(f"One blob = {BLOB_SIZE_BYTES} bytes; your calldata size equals ~{(args.calldata_bytes + BLOB_SIZE_BYTES - 1)//BLOB_SIZE_BYTES} blob(s).")
     if args.tip_gwei == 0:
         out["notes"].append("Zero tip may slow confirmation in congestion.")
+    if args.tip_gwei < 0:
+        print(f"❌ --tip-gwei must be ≥ 0 (got {args.tip_gwei})", file=sys.stderr)
+        sys.exit(1)
 
     if args.json:
         print(json.dumps(out, indent=2, sort_keys=True))
