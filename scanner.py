@@ -53,6 +53,12 @@ def connect(rpc: str) -> Web3:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Scan recent blocks for gas outlier transactions.")
+        p.add_argument(
+        "--delay-ms",
+        type=int,
+        default=0,
+        help="Optional delay between block requests, in milliseconds",
+    )
     p.add_argument("--rpc", default=DEFAULT_RPC, help="RPC URL (default from RPC_URL env)")
     p.add_argument("--blocks", type=int, default=300, help="How many recent blocks to scan (default 300)")
     p.add_argument("--step", type=int, default=3, help="Sample every Nth block for speed (default 3)")
@@ -71,9 +77,17 @@ def tx_tip_gwei(tx: Dict[str, Any], base_fee_wei: int, rcpt: Dict[str, Any]) -> 
         eff = int(tx.get("gasPrice", 0))
     return float(Web3.from_wei(max(0, int(eff) - base_fee_wei), "gwei"))
 
-def scan(w3: Web3, blocks: int, step: int,
-         tip_th: float, eff_low: float, eff_high: float, fee_eth_th: float,
-         max_report: int) -> Dict[str, Any]:
+def scan(
+    w3: Web3,
+    blocks: int,
+    step: int,
+    tip_th: float,
+    eff_low: float,
+    eff_high: float,
+    fee_eth_th: float,
+    max_report: int,
+    delay_ms: int = 0,
+) -> Dict[str, Any]:
     head = int(w3.eth.block_number)
     start = max(0, head - blocks + 1)
     outliers: List[Dict[str, Any]] = []
@@ -83,6 +97,8 @@ def scan(w3: Web3, blocks: int, step: int,
         blk = w3.eth.get_block(n, full_transactions=True)
         base_fee_wei = int(blk.get("baseFeePerGas", 0))
         ts_utc = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(blk.timestamp))
+        if delay_ms > 0:
+            time.sleep(delay_ms / 1000.0)
 
         # Iterate transactions in block
         for tx in blk.transactions:
@@ -159,7 +175,7 @@ def main():
 
     w3 = connect(args.rpc)
     t0 = time.time()
-    result = scan(
+      result = scan(
         w3,
         blocks=args.blocks,
         step=args.step,
@@ -167,8 +183,10 @@ def main():
         eff_low=args.eff_low,
         eff_high=args.eff_high,
         fee_eth_th=args.fee_eth_th,
-        max_report=args.max_report
+        max_report=args.max_report,
+        delay_ms=args.delay_ms,
     )
+
     elapsed = round(time.time() - t0, 2)
 
     if args.json:
