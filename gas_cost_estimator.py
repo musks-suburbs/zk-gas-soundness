@@ -67,10 +67,13 @@ def main():
         print("⚠️  This network may not support EIP-1559 (no baseFeePerGas).")
     base_fee_gwei = float(Web3.from_wei(base_fee_wei, "gwei"))
 
-    if args.tip_percent is not None:
+       if args.tip_percent is not None:
         tip_gwei = base_fee_gwei * args.tip_percent
+        tip_mode = "percent"
     else:
         tip_gwei = args.tip_gwei
+        tip_mode = "gwei"
+
 
     eff_price_gwei = base_fee_gwei + tip_gwei
     gas_used = args.gas_used
@@ -79,6 +82,7 @@ def main():
 
     out = {
         "network": network,
+         "tipMode": tip_mode,
         "chainId": chain_id,
         "latestBaseFeeGwei": round(base_fee_gwei, 3),
         "tipGwei": round(tip_gwei, 3),
@@ -94,7 +98,7 @@ def main():
     else:
         print(f"🌐 {network} (chainId {chain_id})")
         print(f"⛽ Base Fee: {round(base_fee_gwei,3)} Gwei")
-        print(f"🎁 Tip: {round(tip_gwei,3)} Gwei")
+              print(f"🎁 Tip ({tip_mode}): {round(tip_gwei,3)} Gwei")
         print(f"⚙️  Effective Price: {round(eff_price_gwei,3)} Gwei")
         print(f"📦 Gas Used: {gas_used}")
         print(f"💰 Estimated cost: {round(total_eth,6)} ETH", end="")
