@@ -14,7 +14,6 @@ It:
 
 Usage:
   python gas_outlier_scanner.py --rpc https://mainnet.infura.io/v3/<KEY> --blocks 500 --step 2
-  python gas_outlier_scanner.py --blocks 300 --tip-gwei-th 5 --eff-low 15 --eff-high 99 --fee-eth-th 0.2 --json
 """
 
 import os
