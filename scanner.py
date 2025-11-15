@@ -79,8 +79,13 @@ def scan(w3: Web3, blocks: int, step: int,
     outliers: List[Dict[str, Any]] = []
     scanned = 0
 
-    for n in range(head, start - 1, -step):
-        blk = w3.eth.get_block(n, full_transactions=True)
+      for n in range(head, start - 1, -step):
+        try:
+            blk = w3.eth.get_block(n, full_transactions=True)
+        except Exception as e:
+            print(f"⚠️  Failed to fetch block {n}: {e}", file=sys.stderr)
+            continue
+
         base_fee_wei = int(blk.get("baseFeePerGas", 0))
         ts_utc = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(blk.timestamp))
 
