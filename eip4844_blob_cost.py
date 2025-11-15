@@ -90,6 +90,10 @@ def main():
     blob_base_fee_gwei = args.blob_base_fee_gwei
     if blob_base_fee_gwei is None:
         blob_base_fee_gwei = try_get_blob_base_fee_gwei(w3)
+    blob_base_fee_clamped = False
+    if blob_base_fee_gwei is not None and blob_base_fee_gwei < 0:
+        blob_base_fee_gwei = 0.0
+        blob_base_fee_clamped = True
 
     # Execution gas cost (EIP-1559): (base + tip) * gas_used
     eff_gwei = base_fee_gwei + args.tip_gwei
@@ -126,6 +130,8 @@ def main():
             "blobs": round(blob_cost_eth, 8) if blob_cost_eth is not None else None,
             "calldata": round(calld_cost_eth, 8) if calld_cost_eth is not None else None,
         },
+            if blob_base_fee_clamped:
+        out["notes"].append("Blob base fee from RPC was negative and has been clamped to 0.0 Gwei.")
         "notes": [],
     }
 
