@@ -89,5 +89,8 @@ def main():
             flagstr = f"  🏷️ Flags: {','.join(r['flags'])}" if r.get("flags") else ""
             print(f"- {r['txHash']} | block {r['blockNumber']} | gasUsed {r['gasUsed']} | tip {r['tipGwei']:.2f} Gwei{flagstr}")
 
+elapsed = time.time() - t0
+print(f"⏱️ Total audit time: {elapsed:.2f}s") 
+
 if __name__ == "__main__":
     main()
