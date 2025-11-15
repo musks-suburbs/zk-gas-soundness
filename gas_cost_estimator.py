@@ -61,11 +61,16 @@ def main():
     chain_id = int(w3.eth.chain_id)
     network = network_name(chain_id)
 
-    latest = w3.eth.get_block("latest")
-    base_fee_wei = int(latest.get("baseFeePerGas", 0))
-    if base_fee_wei == 0:
-        print("⚠️  This network may not support EIP-1559 (no baseFeePerGas).")
-    base_fee_gwei = float(Web3.from_wei(base_fee_wei, "gwei"))
+       latest = w3.eth.get_block("latest")
+    base_fee_val = latest.get("baseFeePerGas")
+    if base_fee_val is not None:
+        base_fee_wei = int(base_fee_val)
+        base_fee_gwei = float(Web3.from_wei(base_fee_wei, "gwei"))
+    else:
+        print("⚠️  This network may not support EIP-1559 (no baseFeePerGas). Using gas_price as base.")
+        gas_price_wei = int(w3.eth.gas_price)
+        base_fee_wei = gas_price_wei
+        base_fee_gwei = float(Web3.from_wei(gas_price_wei, "gwei"))
 
     if args.tip_percent is not None:
         tip_gwei = base_fee_gwei * args.tip_percent
