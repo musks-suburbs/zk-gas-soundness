@@ -78,6 +78,11 @@ def main():
     w3 = connect(args.rpc)
   print(f"🕒 Audit initiated at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
     hashes = read_tx_hashes(args.file)
+
+  if not hashes:
+    print("⚠️  No transactions found in input file. Please provide valid tx hashes.")
+    sys.exit(1)
+
     results = [audit_tx(w3, h, args.tip_threshold, args.gas_used_threshold) for h in hashes]
 
     if args.json:
