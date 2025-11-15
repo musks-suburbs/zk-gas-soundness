@@ -39,8 +39,24 @@ def connect(rpc: str) -> Web3:
     return w3
 
 def read_tx_hashes(file: str) -> List[str]:
-    with open(file, "r", encoding="utf-8") as f:
-        return [line.strip() for line in f if line.strip()]
+    try:
+        with open(file, "r", encoding="utf-8") as f:
+            lines = [line.strip() for line in f if line.strip()]
+    except FileNotFoundError:
+        print(f"❌ File not found: {file}", file=sys.stderr)
+        sys.exit(1)
+    except OSError as e:
+        print(f"❌ Failed to read file {file}: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    seen = set()
+    unique: List[str] = []
+    for h in lines:
+        if h not in seen:
+            seen.add(h)
+            unique.append(h)
+    return unique
+
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Audit zk-proof or rollup transaction costs for soundness.")
