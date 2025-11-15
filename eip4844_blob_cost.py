@@ -132,9 +132,16 @@ def main():
     # Helpful notes
     if args.blobs > 0 and blob_base_fee_gwei is None:
         out["notes"].append("Blob base fee not available from RPC; pass --blob-base-fee-gwei to override.")
-    if args.calldata_bytes > 0 and args.blobs > 0:
-        # show implied blob count for same data size
-        out["notes"].append(f"One blob = {BLOB_SIZE_BYTES} bytes; your calldata size equals ~{(args.calldata_bytes + BLOB_SIZE_BYTES - 1)//BLOB_SIZE_BYTES} blob(s).")
+       if args.calldata_bytes > 0:
+        implied_blobs = (args.calldata_bytes + BLOB_SIZE_BYTES - 1) // BLOB_SIZE_BYTES
+        if args.blobs > 0:
+            out["notes"].append(
+                f"One blob = {BLOB_SIZE_BYTES} bytes; your calldata size equals ~{implied_blobs} blob(s)."
+            )
+        else:
+            out["notes"].append(
+                f"Your calldata size equals ~{implied_blobs} blob(s) at {BLOB_SIZE_BYTES} bytes per blob."
+            )
     if args.tip_gwei == 0:
         out["notes"].append("Zero tip may slow confirmation in congestion.")
 
