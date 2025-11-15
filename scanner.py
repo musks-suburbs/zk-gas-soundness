@@ -37,6 +37,13 @@ NETWORKS = {
 
 def network_name(cid: int) -> str:
     return NETWORKS.get(cid, f"Unknown (chain ID {cid})")
+    
+def short_addr(addr: Optional[str]) -> str:
+    if not addr:
+        return "None"
+    if len(addr) <= 12:
+        return addr
+    return f"{addr[:6]}…{addr[-4:]}"
 
 def connect(rpc: str) -> Web3:
     w3 = Web3(Web3.HTTPProvider(rpc, request_kwargs={"timeout": 20}))
@@ -186,8 +193,11 @@ def main():
     print("\n— Outliers —")
     for r in result["outliers"]:
         fl = ",".join(r["flags"])
-        print(f"{r['block']} {r['timestampUtc']}  {r['hash']}")
-        print(f"  from {r['from']} → {r['to']}  gas {r['gasUsed']}/{r['gasLimit']} ({r['gasEfficiencyPct']}%)")
+                print(f"{r['block']} {r['timestampUtc']}  {r['hash']}")
+        print(
+            f"  from {short_addr(r['from'])} → {short_addr(r['to'])}  "
+            f"gas {r['gasUsed']}/{r['gasLimit']} ({r['gasEfficiencyPct']}%)"
+        )
         print(f"  base {r['baseFeeGwei']:.3f} G  tip {r['tipGwei']:.3f} G  eff {r['effectiveGasPriceGwei']:.3f} G  fee {r['totalFeeETH']:.6f} ETH  [{fl}]")
 
 if __name__ == "__main__":
