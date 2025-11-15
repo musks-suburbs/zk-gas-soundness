@@ -64,13 +64,15 @@ def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: i
         flags.append("High tip")
     if gas_used > gas_used_threshold:
         flags.append("High gas used")
-    return {
+      return {
         "txHash": tx_hash,
+        "from": tx["from"],
+        "to": tx.get("to"),
         "blockNumber": int(rcpt.blockNumber),
         "gasUsed": gas_used,
         "effectiveGasPriceGwei": float(Web3.from_wei(eff_price, "gwei")),
-        "tipGwei": float(Web3.from_wei(tip_per_gas, "gwei")),
-        "flags": flags or None
+        "tipGwei": float(Web3.from_wei(tip_per_gas, "gwei")) if base_fee_val is not None else None,
+        "flags": flags or None,
     }
 
 def main():
