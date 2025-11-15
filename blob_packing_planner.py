@@ -47,7 +47,14 @@ def connect(rpc: str) -> Web3:
     if not w3.is_connected():
         print("❌ Failed to connect to RPC.", file=sys.stderr)
         sys.exit(1)
+            # Improve compatibility for PoA / some L2 chains
+    try:
+        from web3.middleware import geth_poa_middleware
+        w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+    except Exception:
+        pass
     return w3
+
 
 def try_get_blob_base_fee_gwei(w3: Web3) -> Optional[float]:
     # Try block field first
