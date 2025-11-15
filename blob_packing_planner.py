@@ -132,6 +132,10 @@ def main():
         sizes = read_sizes_file(args.file)
     sizes = [max(0, s) for s in sizes]
     total_bytes = sum(sizes)
+    if args.gas_used == 0:
+        result["notes"].append("Execution gas (--gas-used) is 0; only data costs are included.")
+    if blob_base_fee_gwei is None and blob_count > 0:
+        result["notes"].append("Blob base fee not available from RPC; pass --blob-base-fee-gwei to override.")
 
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
