@@ -46,6 +46,12 @@ def connect(rpc: str) -> Web3:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Estimate ETH cost for a contract call given gasUsed and tip.")
+        p.add_argument(
+        "--round-digits",
+        type=int,
+        default=6,
+        help="Decimal places for ETH cost in output",
+    )
     p.add_argument("--rpc", default=DEFAULT_RPC, help="RPC URL")
     p.add_argument("--gas-used", type=int, required=True, help="Estimated gasUsed for the operation")
     group = p.add_mutually_exclusive_group(required=True)
@@ -79,12 +85,12 @@ def main():
 
     out = {
         "network": network,
+        "estimatedCostETH": round(total_eth, args.round_digits),
         "chainId": chain_id,
         "latestBaseFeeGwei": round(base_fee_gwei, 3),
         "tipGwei": round(tip_gwei, 3),
         "effectivePriceGwei": round(eff_price_gwei, 3),
         "gasUsed": gas_used,
-        "estimatedCostETH": round(total_eth, 6),
     }
     if args.eth_price is not None:
         out["estimatedCostUSD"] = round(total_eth * args.eth_price, 2)
@@ -97,7 +103,7 @@ def main():
         print(f"🎁 Tip: {round(tip_gwei,3)} Gwei")
         print(f"⚙️  Effective Price: {round(eff_price_gwei,3)} Gwei")
         print(f"📦 Gas Used: {gas_used}")
-        print(f"💰 Estimated cost: {round(total_eth,6)} ETH", end="")
+              print(f"💰 Estimated cost: {round(total_eth, args.round_digits)} ETH", end="")
         if args.eth_price is not None:
             print(f"  (~${round(total_eth * args.eth_price,2)} USD)")
         else:
