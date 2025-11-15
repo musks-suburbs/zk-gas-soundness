@@ -102,6 +102,13 @@ def main():
             print(f"  (~${round(total_eth * args.eth_price,2)} USD)")
         else:
             print()
+                if tip_gwei is not None and tip_gwei > 500:
+        print(
+            f"⚠️  Tip appears very high ({tip_gwei:.3f} Gwei). "
+            "Did you intend this?",
+            file=sys.stderr,
+        )
+
         print()
 
 if __name__ == "__main__":
