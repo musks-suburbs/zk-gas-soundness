@@ -78,6 +78,23 @@ def scan(w3: Web3, blocks: int, step: int,
     start = max(0, head - blocks + 1)
     outliers: List[Dict[str, Any]] = []
     scanned = 0
+    """
+    Scan recent blocks for gas outlier transactions.
+
+    Args:
+        w3: Connected Web3 instance.
+        blocks: Number of recent blocks to consider (from head backwards).
+        step: Sample every Nth block for speed.
+        tip_th: Tip threshold in Gwei.
+        eff_low: Lower gas efficiency threshold (percentage).
+        eff_high: Upper gas efficiency threshold (percentage).
+        fee_eth_th: Total fee threshold in ETH.
+        max_report: Maximum number of outliers to record.
+
+    Returns:
+        A dictionary summarizing network info, scan parameters, and a list
+        of outlier transaction records.
+    """
 
     for n in range(head, start - 1, -step):
         blk = w3.eth.get_block(n, full_transactions=True)
