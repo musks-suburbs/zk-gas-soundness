@@ -153,6 +153,13 @@ def scan(w3: Web3, blocks: int, step: int,
 
 def main():
     args = parse_args()
+        if "your_api_key" in args.rpc:
+        print(
+            "❌ RPC URL appears to still contain the placeholder 'your_api_key'. "
+            "Please set RPC_URL env var or pass --rpc with a real endpoint.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
     if args.blocks <= 0 or args.step <= 0:
         print("❌ --blocks and --step must be > 0", file=sys.stderr)
         sys.exit(1)
