@@ -24,6 +24,7 @@ import argparse
 from typing import Optional
 from web3 import Web3
 
+__version__ = "0.1.0"
 DEFAULT_RPC = os.getenv("RPC_URL", "https://mainnet.infura.io/v3/your_api_key")
 BLOB_SIZE_BYTES = 131072  # 128 KiB per blob (EIP-4844)
 CALLDATA_GAS_PER_BYTE = 16  # worst-case (non-zero byte)
@@ -78,6 +79,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--blob-base-fee-gwei", type=float, help="Override blob base fee in Gwei (if node doesn’t expose it)")
     p.add_argument("--calldata-bytes", type=int, default=0, help="Alternative data size as calldata bytes (for compare)")
     p.add_argument("--json", action="store_true", help="Print JSON only")
+        p.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+        help="Show program version and exit",
+    )
     return p.parse_args()
 
 def main():
