@@ -90,4 +90,9 @@ def main():
             print(f"- {r['txHash']} | block {r['blockNumber']} | gasUsed {r['gasUsed']} | tip {r['tipGwei']:.2f} Gwei{flagstr}")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n🛑 Audit aborted by user.", file=sys.stderr)
+        sys.exit(1)
+
