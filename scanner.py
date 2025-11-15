@@ -191,4 +191,8 @@ def main():
         print(f"  base {r['baseFeeGwei']:.3f} G  tip {r['tipGwei']:.3f} G  eff {r['effectiveGasPriceGwei']:.3f} G  fee {r['totalFeeETH']:.6f} ETH  [{fl}]")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n🛑 Aborted by user.", file=sys.stderr)
+        sys.exit(1)
