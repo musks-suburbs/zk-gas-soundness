@@ -159,7 +159,7 @@ def main():
 
     w3 = connect(args.rpc)
     t0 = time.time()
-    result = scan(
+        result = scan(
         w3,
         blocks=args.blocks,
         step=args.step,
@@ -170,6 +170,8 @@ def main():
         max_report=args.max_report
     )
     elapsed = round(time.time() - t0, 2)
+    result["timingSec"] = elapsed
+
 
     if args.json:
         print(json.dumps({**result, "timingSec": elapsed}, indent=2, sort_keys=True))
