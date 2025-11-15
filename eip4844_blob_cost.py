@@ -77,8 +77,10 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--blobs", type=int, default=0, help="Number of blobs to post (EIP-4844)")
     p.add_argument("--blob-base-fee-gwei", type=float, help="Override blob base fee in Gwei (if node doesn’t expose it)")
     p.add_argument("--calldata-bytes", type=int, default=0, help="Alternative data size as calldata bytes (for compare)")
+    p.add_argument("--eth-price", type=float, help="ETH price in USD (optional, for USD cost estimates)")
     p.add_argument("--json", action="store_true", help="Print JSON only")
     return p.parse_args()
+
 
 def main():
     args = parse_args()
@@ -106,8 +108,15 @@ def main():
     if args.calldata_bytes > 0:
         calldata_gas = args.calldata_bytes * CALLDATA_GAS_PER_BYTE
         calld_cost_eth = float(Web3.from_wei(Web3.to_wei(eff_gwei, "gwei") * calldata_gas, "ether"))
-
-    out = {
+  # Optional USD costs
+    exec_cost_usd = blob_cost_usd = calld_cost_usd = None
+    if args.eth_price is not None:
+        exec_cost_usd = round(exec_cost_eth * args.eth_price, 4)
+        if blob_cost_eth is not None:
+            blob_cost_usd = round(blob_cost_eth * args.eth_price, 4)
+        if calld_cost_eth is not None:
+            calld_cost_usd = round(calld_cost_eth * args.eth_price, 4)
+       out = {
         "network": network_name(chain_id),
         "chainId": chain_id,
         "blockNumber": int(latest.number),
@@ -116,6 +125,7 @@ def main():
         "tipGwei": round(args.tip_gwei, 4),
         "effectivePriceGwei": round(eff_gwei, 4),
         "blobBaseFeeGwei": round(blob_base_fee_gwei, 6) if blob_base_fee_gwei is not None else None,
+        "ethPriceUSD": float(args.eth_price) if args.eth_price is not None else None,
         "inputs": {
             "gasUsed": args.gas_used,
             "blobs": args.blobs,
@@ -125,6 +135,11 @@ def main():
             "execution": round(exec_cost_eth, 8),
             "blobs": round(blob_cost_eth, 8) if blob_cost_eth is not None else None,
             "calldata": round(calld_cost_eth, 8) if calld_cost_eth is not None else None,
+        },
+        "costsUSD": {
+            "execution": exec_cost_usd,
+            "blobs": blob_cost_usd,
+            "calldata": calld_cost_usd,
         },
         "notes": [],
     }
@@ -148,12 +163,25 @@ def main():
     if out["blobBaseFeeGwei"] is not None:
         print(f"🫧 Blob base fee: {out['blobBaseFeeGwei']} Gwei")
     print(f"📥 Inputs → gasUsed={args.gas_used}  blobs={args.blobs}  calldataBytes={args.calldata_bytes}")
-    print("— Estimated Costs (ETH) —")
-    print(f"   • Execution       : {out['costsETH']['execution']}")
-    if out["costsETH"]["blobs"] is not None:
-        print(f"   • Blobs (data)    : {out['costsETH']['blobs']}")
-    if out["costsETH"]["calldata"] is not None:
-        print(f"   • Calldata (data) : {out['costsETH']['calldata']}")
+     print("— Estimated Costs (ETH) —")
+    exec_line = f"   • Execution       : {out['costsETH']['execution']}"
+    blobs_line = f"   • Blobs (data)    : {out['costsETH']['blobs']}" if out["costsETH"]["blobs"] is not None else None
+    calld_line = f"   • Calldata (data) : {out['costsETH']['calldata']}" if out["costsETH"]["calldata"] is not None else None
+
+    if args.eth_price is not None:
+        if out["costsUSD"]["execution"] is not None:
+            exec_line += f"  (~${out['costsUSD']['execution']} USD)"
+        if blobs_line is not None and out["costsUSD"]["blobs"] is not None:
+            blobs_line += f"  (~${out['costsUSD']['blobs']} USD)"
+        if calld_line is not None and out["costsUSD"]["calldata"] is not None:
+            calld_line += f"  (~${out['costsUSD']['calldata']} USD)"
+
+    print(exec_line)
+    if blobs_line is not None:
+        print(blobs_line)
+    if calld_line is not None:
+        print(calld_line)
+
     if out["notes"]:
         print("ℹ️  Notes:")
         for n in out["notes"]:
