@@ -153,8 +153,12 @@ def scan(w3: Web3, blocks: int, step: int,
 
 def main():
     args = parse_args()
-    if args.blocks <= 0 or args.step <= 0:
-        print("❌ --blocks and --step must be > 0", file=sys.stderr)
+      if args.blocks <= 0 or args.step <= 0:
+        print(
+            f"❌ --blocks and --step must be > 0 "
+            f"(got blocks={args.blocks}, step={args.step})",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     w3 = connect(args.rpc)
