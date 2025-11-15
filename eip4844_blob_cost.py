@@ -71,6 +71,12 @@ def try_get_blob_base_fee_gwei(w3: Web3) -> Optional[float]:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Estimate blob vs calldata costs under current gas conditions.")
+       p.add_argument(
+        "--round-digits",
+        type=int,
+        default=8,
+        help="Decimal places for ETH costs in output",
+    )
     p.add_argument("--rpc", default=DEFAULT_RPC, help="RPC URL (default RPC_URL env)")
     p.add_argument("--gas-used", type=int, default=0, help="Estimated execution gas (excludes data gas)")
     p.add_argument("--tip-gwei", type=float, default=1.0, help="Priority tip in Gwei (default 1.0)")
@@ -110,6 +116,12 @@ def main():
     out = {
         "network": network_name(chain_id),
         "chainId": chain_id,
+                "costsETH": {
+            "execution": round(exec_cost_eth, args.round_digits),
+            "blobs": round(blob_cost_eth, args.round_digits) if blob_cost_eth is not None else None,
+            "calldata": round(calld_cost_eth, args.round_digits) if calld_cost_eth is not None else None,
+        },
+
         "blockNumber": int(latest.number),
         "timestampUtc": time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(latest.timestamp)),
         "baseFeeGwei": round(base_fee_gwei, 4),
