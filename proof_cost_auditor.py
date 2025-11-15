@@ -52,26 +52,41 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: int) -> Dict[str, Any]:
-    rcpt = w3.eth.get_transaction_receipt(tx_hash)
-    tx = w3.eth.get_transaction(tx_hash)
+    try:
+        rcpt = w3.eth.get_transaction_receipt(tx_hash)
+        tx = w3.eth.get_transaction(tx_hash)
+    except Exception as e:
+        return {
+            "txHash": tx_hash,
+            "error": f"Failed to fetch transaction or receipt: {e}",
+        }
+
     blk = w3.eth.get_block(int(rcpt.blockNumber))
     base_fee = int(blk.get("baseFeePerGas", 0))
-    eff_price = int(rcpt.effectiveGasPrice if hasattr(rcpt, "effectiveGasPrice") else tx.gasPrice)
+
+    eff_price = int(
+        getattr(rcpt, "effectiveGasPrice", None)
+        if getattr(rcpt, "effectiveGasPrice", None) is not None
+        else tx.gasPrice
+    )
     tip_per_gas = eff_price - base_fee
     gas_used = int(rcpt.gasUsed)
+
     flags = []
     if tip_per_gas > Web3.to_wei(tip_threshold, "gwei"):
         flags.append("High tip")
     if gas_used > gas_used_threshold:
         flags.append("High gas used")
+
     return {
         "txHash": tx_hash,
         "blockNumber": int(rcpt.blockNumber),
         "gasUsed": gas_used,
         "effectiveGasPriceGwei": float(Web3.from_wei(eff_price, "gwei")),
         "tipGwei": float(Web3.from_wei(tip_per_gas, "gwei")),
-        "flags": flags or None
+        "flags": flags or None,
     }
+
 
 def main():
     args = parse_args()
