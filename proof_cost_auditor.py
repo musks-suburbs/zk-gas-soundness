@@ -78,16 +78,21 @@ def main():
     w3 = connect(args.rpc)
   print(f"🕒 Audit initiated at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
     hashes = read_tx_hashes(args.file)
+   t0 = time.time()
     results = [audit_tx(w3, h, args.tip_threshold, args.gas_used_threshold) for h in hashes]
+    elapsed = round(time.time() - t0, 2)
 
-    if args.json:
-        print(json.dumps(results, indent=2, sort_keys=True))
+
+
+          if args.json:
+        print(json.dumps({"elapsedSec": elapsed, "results": results}, indent=2, sort_keys=True))
+
     else:
         print(f"🌐 {network_name(int(w3.eth.chain_id))} (chainId {w3.eth.chain_id})")
         print("🔍 Proof cost audit results:")
         for r in results:
             flagstr = f"  🏷️ Flags: {','.join(r['flags'])}" if r.get("flags") else ""
             print(f"- {r['txHash']} | block {r['blockNumber']} | gasUsed {r['gasUsed']} | tip {r['tipGwei']:.2f} Gwei{flagstr}")
-
+        print(f"\n⏱️  Audit completed in {elapsed} seconds.")
 if __name__ == "__main__":
     main()
