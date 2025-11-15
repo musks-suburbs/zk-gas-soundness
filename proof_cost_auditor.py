@@ -51,7 +51,19 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--json", action="store_true", help="Output JSON only")
     return p.parse_args()
 
-def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: int) -> Dict[str, Any]:
+def audit_tx(
+    w3: Web3,
+    tx_hash: str,
+    tip_threshold: float,
+    gas_used_threshold: int,
+) -> Dict[str, Any]:
+    """
+    Audit a single proof transaction for gas cost characteristics.
+
+    Returns:
+        A dict containing basic tx metadata, gas usage, pricing info,
+        and an optional list of flags, or an error description.
+    """
     rcpt = w3.eth.get_transaction_receipt(tx_hash)
     tx = w3.eth.get_transaction(tx_hash)
     blk = w3.eth.get_block(int(rcpt.blockNumber))
