@@ -44,6 +44,12 @@ def read_tx_hashes(file: str) -> List[str]:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Audit zk-proof or rollup transaction costs for soundness.")
+      p.add_argument(
+        "--max",
+        type=int,
+        default=0,
+        help="Optionally limit the number of transactions to audit (0 = no limit)",
+    )
     p.add_argument("--rpc", default=DEFAULT_RPC, help="RPC URL")
     p.add_argument("--file", required=True, help="File with one proof tx hash per line")
     p.add_argument("--tip-threshold", type=float, default=3.0, help="Tip Gwei threshold above network typical")
@@ -77,7 +83,13 @@ def main():
     args = parse_args()
     w3 = connect(args.rpc)
   print(f"🕒 Audit initiated at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
-    hashes = read_tx_hashes(args.file)
+       hashes = read_tx_hashes(args.file)
+    if not hashes:
+        print(f"⚠️  No transaction hashes found in {args.file}. Nothing to audit.")
+        return
+    if args.max > 0 and len(hashes) > args.max:
+        hashes = hashes[:args.max]
+        print(f"ℹ️  Limiting to first {args.max} transactions from file.")
     results = [audit_tx(w3, h, args.tip_threshold, args.gas_used_threshold) for h in hashes]
 
     if args.json:
