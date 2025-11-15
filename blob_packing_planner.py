@@ -138,6 +138,8 @@ def main():
     latest = w3.eth.get_block("latest")
     ts_utc = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(latest.timestamp))
     base_fee_gwei = float(Web3.from_wei(int(latest.get("baseFeePerGas", 0)), "gwei"))
+    gas_price_wei = int(w3.eth.gas_price)
+    gas_price_gwei = float(Web3.from_wei(gas_price_wei, "gwei"))
 
     blob_base_fee_gwei = args.blob_base_fee_gwei
     if blob_base_fee_gwei is None:
@@ -159,6 +161,11 @@ def main():
     calldata_cost_eth = float(Web3.from_wei(Web3.to_wei(eff_gwei, "gwei") * calldata_gas, "ether"))
 
     result: Dict[str, Any] = {
+                "baseFeeGwei": round(base_fee_gwei, 4),
+        "tipGwei": round(args.tip_gwei, 4),
+        "effectiveGwei": round(eff_gwei, 4),
+        "blobBaseFeeGwei": round(blob_base_fee_gwei, 6) if blob_base_fee_gwei is not None else None,
+        "gasPriceGwei": round(gas_price_gwei, 4),
         "network": network_name(chain_id),
         "chainId": chain_id,
         "blockNumber": int(latest.number),
@@ -197,7 +204,12 @@ def main():
 
     # Pretty print
     print(f"🌐 {result['network']} (chainId {result['chainId']})  🧱 block {result['blockNumber']}  🕒 {result['timestampUtc']} UTC")
-    print(f"⛽ Base fee: {result['baseFeeGwei']} Gwei   🎁 Tip: {result['tipGwei']} Gwei   ⚙️ Eff: {result['effectiveGwei']} Gwei")
+        print(
+        f"⛽ Base: {result['baseFeeGwei']} Gwei   "
+        f"🎁 Tip: {result['tipGwei']} Gwei   "
+        f"⚙️ Eff: {result['effectiveGwei']} Gwei   "
+        f"💨 Gas price: {result['gasPriceGwei']} Gwei"
+    )
     if result["blobBaseFeeGwei"] is not None:
         print(f"🫧 Blob base fee: {result['blobBaseFeeGwei']} Gwei")
     print(f"📦 Total payload: {total_bytes} bytes  →  Blobs needed: {blob_count}")
