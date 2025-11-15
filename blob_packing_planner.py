@@ -124,6 +124,7 @@ def parse_args() -> argparse.Namespace:
 
 def main():
     args = parse_args()
+    t0 = time.time()
 
     # Read and validate sizes
     if args.sizes:
@@ -187,6 +188,8 @@ def main():
         ],
         "notes": [],
     }
+    elapsed = round(time.time() - t0, 3)
+    result["timingSec"] = elapsed
 
     if blob_base_fee_gwei is None and blob_count > 0:
         result["notes"].append("Blob base fee not available from RPC; pass --blob-base-fee-gwei to override.")
@@ -217,6 +220,8 @@ def main():
         print("ℹ️  Notes:")
         for n in result["notes"]:
             print(f"   - {n}")
+    if not args.json:
+        print(f"\n⏱️  Computation time: {elapsed} seconds")
 
 if __name__ == "__main__":
     main()
