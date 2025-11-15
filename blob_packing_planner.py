@@ -118,7 +118,8 @@ def parse_args() -> argparse.Namespace:
     grp.add_argument("--file", help="File with one payload size (bytes) per line")
     ap.add_argument("--gas-used", type=int, default=0, help="Estimated execution gas (excludes data gas)")
     ap.add_argument("--tip-gwei", type=float, default=1.0, help="Priority tip (Gwei)")
-    ap.add_argument("--blob-base-fee-gwei", type=float, help="Override blob base fee (Gwei)")
+ ap.add_argument("--blob-base-fee-gwei", type=float, help="Override blob base fee (Gwei)")
+    ap.add_argument("--eth-price", type=float, help="ETH price in USD (optional)")
     ap.add_argument("--json", action="store_true", help="Print JSON only")
     return ap.parse_args()
 
@@ -157,8 +158,24 @@ def main():
 
     calldata_gas = total_bytes * CALLDATA_GAS_PER_BYTE
     calldata_cost_eth = float(Web3.from_wei(Web3.to_wei(eff_gwei, "gwei") * calldata_gas, "ether"))
+    exec_cost_usd = blob_cost_usd = calldata_cost_usd = None
+    if args.eth_price is not None:
+        exec_cost_usd = round(exec_cost_eth * args.eth_price, 4)
+        if blob_cost_eth is not None:
+            blob_cost_usd = round(blob_cost_eth * args.eth_price, 4)
+        calldata_cost_usd = round(calldata_cost_eth * args.eth_price, 4)
 
     result: Dict[str, Any] = {
+                "costsETH": {
+            "execution": round(exec_cost_eth, 8),
+            "blobs": round(blob_cost_eth, 8) if blob_cost_eth is not None else None,
+            "calldata": round(calldata_cost_eth, 8),
+        },
+        "costsUSD": {
+            "execution": exec_cost_usd,
+            "blobs": blob_cost_usd,
+            "calldata": calldata_cost_usd,
+        },
         "network": network_name(chain_id),
         "chainId": chain_id,
         "blockNumber": int(latest.number),
@@ -202,10 +219,27 @@ def main():
         print(f"🫧 Blob base fee: {result['blobBaseFeeGwei']} Gwei")
     print(f"📦 Total payload: {total_bytes} bytes  →  Blobs needed: {blob_count}")
     print("— Estimated Costs (ETH) —")
-    print(f"   • Execution       : {result['costsETH']['execution']}")
-    if result["costsETH"]["blobs"] is not None:
-        print(f"   • Blobs (packed)  : {result['costsETH']['blobs']}")
-    print(f"   • Calldata (raw)  : {result['costsETH']['calldata']}")
+    exec_line = f"   • Execution       : {result['costsETH']['execution']}"
+    blobs_line = (
+        f"   • Blobs (packed)  : {result['costsETH']['blobs']}"
+        if result["costsETH"]["blobs"] is not None
+        else None
+    )
+    calldata_line = f"   • Calldata (raw)  : {result['costsETH']['calldata']}"
+
+    if args.eth_price is not None:
+        if result["costsUSD"]["execution"] is not None:
+            exec_line += f"  (~${result['costsUSD']['execution']} USD)"
+        if blobs_line is not None and result["costsUSD"]["blobs"] is not None:
+            blobs_line += f"  (~${result['costsUSD']['blobs']} USD)"
+        if result["costsUSD"]["calldata"] is not None:
+            calldata_line += f"  (~${result['costsUSD']['calldata']} USD)"
+
+    print(exec_line)
+    if blobs_line is not None:
+        print(blobs_line)
+    print(calldata_line)
+
     if result["costsETH"].get("blobs") is not None and result["costsETH"]["calldata"] > 0:
         ratio = result["costsETH"]["blobs"] / result["costsETH"]["calldata"]
         print(f"📊 Blob-to-calldata cost ratio: {round(ratio, 3)}×")
