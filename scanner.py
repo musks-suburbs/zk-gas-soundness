@@ -26,6 +26,7 @@ from typing import Any, Dict, List, Optional
 from web3 import Web3
 
 DEFAULT_RPC = os.getenv("RPC_URL", "https://mainnet.infura.io/v3/your_api_key")
+__version__ = "0.1.0"
 
 NETWORKS = {
     1: "Ethereum Mainnet",
@@ -62,6 +63,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--fee-eth-th", type=float, default=0.1, help="Flag if total fee >= this ETH (default 0.1)")
     p.add_argument("--max-report", type=int, default=100, help="Max outliers to show (default 100)")
     p.add_argument("--json", action="store_true", help="Print JSON instead of text")
+        p.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+        help="Show program version and exit",
+    )
     return p.parse_args()
 
 def tx_tip_gwei(tx: Dict[str, Any], base_fee_wei: int, rcpt: Dict[str, Any]) -> float:
