@@ -146,6 +146,9 @@ def main():
     # Packing
     bins = first_fit_decreasing_binpack(sizes, BLOB_SIZE_BYTES)
     blob_count = len(bins)
+    total_free_bytes = sum(
+        BLOB_SIZE_BYTES - sum(sizes[j] for j in bin_) for bin_ in bins
+    )
 
     # Costs
     eff_gwei = base_fee_gwei + args.tip_gwei
@@ -159,6 +162,11 @@ def main():
     calldata_cost_eth = float(Web3.from_wei(Web3.to_wei(eff_gwei, "gwei") * calldata_gas, "ether"))
 
     result: Dict[str, Any] = {
+         "totals": {
+            "payloadBytes": total_bytes,
+            "blobCount": blob_count,
+            "totalFreeBytes": total_free_bytes,
+        },
         "network": network_name(chain_id),
         "chainId": chain_id,
         "blockNumber": int(latest.number),
