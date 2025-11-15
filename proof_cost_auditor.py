@@ -25,6 +25,8 @@ import argparse
 from typing import List, Dict, Any
 from web3 import Web3
 
+__version__ = "0.1.0"
+
 DEFAULT_RPC = os.getenv("RPC_URL", "https://mainnet.infura.io/v3/your_api_key")
 NETWORKS = {1: "Ethereum Mainnet", 11155111: "Sepolia Testnet", 10: "Optimism", 137: "Polygon", 42161: "Arbitrum One"}
 
@@ -49,6 +51,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--tip-threshold", type=float, default=3.0, help="Tip Gwei threshold above network typical")
     p.add_argument("--gas-used-threshold", type=int, default=5_000_000, help="GasUsed threshold in units")
     p.add_argument("--json", action="store_true", help="Output JSON only")
+      p.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+        help="Show program version and exit",
+    )
     return p.parse_args()
 
 def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: int) -> Dict[str, Any]:
