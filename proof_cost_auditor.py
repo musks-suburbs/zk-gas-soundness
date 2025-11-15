@@ -56,7 +56,8 @@ def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: i
     tx = w3.eth.get_transaction(tx_hash)
     blk = w3.eth.get_block(int(rcpt.blockNumber))
     base_fee = int(blk.get("baseFeePerGas", 0))
-    eff_price = int(rcpt.effectiveGasPrice if hasattr(rcpt, "effectiveGasPrice") else tx.gasPrice)
+       eff_from_rcpt = getattr(rcpt, "effectiveGasPrice", None)
+    eff_price = int(eff_from_rcpt if eff_from_rcpt is not None else tx.gasPrice)
     tip_per_gas = eff_price - base_fee
     gas_used = int(rcpt.gasUsed)
     flags = []
