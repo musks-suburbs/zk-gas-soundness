@@ -21,7 +21,6 @@ import os
 import sys
 import time
 import json
-import math
 import argparse
 from typing import List, Dict, Any, Optional
 from web3 import Web3
