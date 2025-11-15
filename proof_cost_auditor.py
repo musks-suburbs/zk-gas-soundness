@@ -43,7 +43,10 @@ def read_tx_hashes(file: str) -> List[str]:
         return [line.strip() for line in f if line.strip()]
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Audit zk-proof or rollup transaction costs for soundness.")
+    p = argparse.ArgumentParser(
+        description="Audit zk-proof or rollup transaction costs for soundness.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
     p.add_argument("--rpc", default=DEFAULT_RPC, help="RPC URL")
     p.add_argument("--file", required=True, help="File with one proof tx hash per line")
     p.add_argument("--tip-threshold", type=float, default=3.0, help="Tip Gwei threshold above network typical")
