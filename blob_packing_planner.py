@@ -219,4 +219,8 @@ def main():
             print(f"   - {n}")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n🛑 Aborted by user.", file=sys.stderr)
+        sys.exit(1)
