@@ -82,6 +82,7 @@ def parse_args() -> argparse.Namespace:
 
 def main():
     args = parse_args()
+       t0 = time.time()
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
     latest = w3.eth.get_block("latest")
@@ -100,7 +101,7 @@ def main():
     blob_cost_eth = None
     if args.blobs > 0 and blob_base_fee_gwei is not None:
         blob_cost_eth = float(Web3.from_wei(Web3.to_wei(blob_base_fee_gwei, "gwei") * args.blobs, "ether"))
-
+elapsed = round(time.time() - t0, 3)
     # Calldata cost (conservative): calldata bytes * 16 gas/byte at (base+tip)
     calld_cost_eth = None
     if args.calldata_bytes > 0:
@@ -127,6 +128,13 @@ def main():
             "calldata": round(calld_cost_eth, 8) if calld_cost_eth is not None else None,
         },
         "notes": [],
+           "costsETH": {
+            "execution": round(exec_cost_eth, 8),
+            "blobs": round(blob_cost_eth, 8) if blob_cost_eth is not None else None,
+            "calldata": round(calld_cost_eth, 8) if calld_cost_eth is not None else None,
+        },
+        "notes": [],
+        "timingSec": elapsed,
     }
 
     # Helpful notes
@@ -158,6 +166,8 @@ def main():
         print("ℹ️  Notes:")
         for n in out["notes"]:
             print(f"   - {n}")
+    if not args.json:
+        print(f"\n⏱️  Computation time: {elapsed} seconds")
 
 if __name__ == "__main__":
     main()
