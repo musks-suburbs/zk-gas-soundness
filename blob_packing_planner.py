@@ -93,7 +93,17 @@ def read_sizes_file(path: str) -> List[int]:
     return out
 
 def first_fit_decreasing_binpack(sizes: List[int], bin_cap: int) -> List[List[int]]:
-    """Return bins; each bin is a list of indices of sizes placed into that blob."""
+    """
+    Pack items using the First-Fit Decreasing heuristic.
+
+    Args:
+        sizes: List of payload sizes (bytes).
+        bin_cap: Capacity of a single blob (bytes).
+
+    Returns:
+        A list of bins; each bin is a list of indices into `sizes` that
+        fit within a single blob.
+    """
     order = sorted(range(len(sizes)), key=lambda i: sizes[i], reverse=True)
     bins: List[List[int]] = []
     remaining: List[int] = []  # remaining capacity per bin
