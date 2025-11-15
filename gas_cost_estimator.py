@@ -62,6 +62,7 @@ def main():
     network = network_name(chain_id)
 
     latest = w3.eth.get_block("latest")
+        latest_ts_utc = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(latest.timestamp))
     base_fee_wei = int(latest.get("baseFeePerGas", 0))
     if base_fee_wei == 0:
         print("⚠️  This network may not support EIP-1559 (no baseFeePerGas).")
@@ -77,15 +78,18 @@ def main():
     total_wei = Web3.to_wei(eff_price_gwei, "gwei") * gas_used
     total_eth = float(Web3.from_wei(total_wei, "ether"))
 
-    out = {
+       out = {
         "network": network,
         "chainId": chain_id,
+        "latestBlockNumber": int(latest.number),
+        "latestBlockTimestampUtc": latest_ts_utc,
         "latestBaseFeeGwei": round(base_fee_gwei, 3),
         "tipGwei": round(tip_gwei, 3),
         "effectivePriceGwei": round(eff_price_gwei, 3),
         "gasUsed": gas_used,
         "estimatedCostETH": round(total_eth, 6),
     }
+
     if args.eth_price is not None:
         out["estimatedCostUSD"] = round(total_eth * args.eth_price, 2)
 
@@ -93,6 +97,7 @@ def main():
         print(json.dumps(out, indent=2, sort_keys=True))
     else:
         print(f"🌐 {network} (chainId {chain_id})")
+                print(f"🕒 Block {latest.number} at {latest_ts_utc} UTC")
         print(f"⛽ Base Fee: {round(base_fee_gwei,3)} Gwei")
         print(f"🎁 Tip: {round(tip_gwei,3)} Gwei")
         print(f"⚙️  Effective Price: {round(eff_price_gwei,3)} Gwei")
