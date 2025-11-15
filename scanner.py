@@ -26,6 +26,7 @@ from typing import Any, Dict, List, Optional
 from web3 import Web3
 
 DEFAULT_RPC = os.getenv("RPC_URL", "https://mainnet.infura.io/v3/your_api_key")
+MAX_REPORT_DEFAULT = int(os.getenv("GAS_OUTLIER_MAX_REPORT", "100"))
 
 NETWORKS = {
     1: "Ethereum Mainnet",
@@ -60,7 +61,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--eff-low", type=float, default=20.0, help="Flag if gas efficiency <= this % (default 20)")
     p.add_argument("--eff-high", type=float, default=99.5, help="Flag if gas efficiency >= this % (default 99.5)")
     p.add_argument("--fee-eth-th", type=float, default=0.1, help="Flag if total fee >= this ETH (default 0.1)")
-    p.add_argument("--max-report", type=int, default=100, help="Max outliers to show (default 100)")
+       p.add_argument(
+        "--max-report",
+        type=int,
+        default=MAX_REPORT_DEFAULT,
+        help="Max outliers to show",
+    )
     p.add_argument("--json", action="store_true", help="Print JSON instead of text")
     return p.parse_args()
 
