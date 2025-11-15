@@ -70,7 +70,7 @@ def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: i
         "gasUsed": gas_used,
         "effectiveGasPriceGwei": float(Web3.from_wei(eff_price, "gwei")),
         "tipGwei": float(Web3.from_wei(tip_per_gas, "gwei")),
-        "flags": flags or None
+                "flags": flags,
     }
 
 def main():
