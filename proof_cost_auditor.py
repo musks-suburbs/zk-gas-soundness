@@ -80,8 +80,14 @@ def main():
     hashes = read_tx_hashes(args.file)
     results = [audit_tx(w3, h, args.tip_threshold, args.gas_used_threshold) for h in hashes]
 
-    if args.json:
-        print(json.dumps(results, indent=2, sort_keys=True))
+       if args.json:
+        payload = {
+            "network": network_name(int(w3.eth.chain_id)),
+            "chainId": int(w3.eth.chain_id),
+            "elapsedSec": elapsed,
+            "results": results,
+        }
+        print(json.dumps(payload, indent=2, sort_keys=True))
     else:
         print(f"🌐 {network_name(int(w3.eth.chain_id))} (chainId {w3.eth.chain_id})")
         print("🔍 Proof cost audit results:")
