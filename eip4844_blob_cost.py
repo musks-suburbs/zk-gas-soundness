@@ -70,7 +70,10 @@ def try_get_blob_base_fee_gwei(w3: Web3) -> Optional[float]:
     return None
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Estimate blob vs calldata costs under current gas conditions.")
+    p = argparse.ArgumentParser(
+        description="Estimate blob vs calldata costs under current gas conditions.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
     p.add_argument("--rpc", default=DEFAULT_RPC, help="RPC URL (default RPC_URL env)")
     p.add_argument("--gas-used", type=int, default=0, help="Estimated execution gas (excludes data gas)")
     p.add_argument("--tip-gwei", type=float, default=1.0, help="Priority tip in Gwei (default 1.0)")
