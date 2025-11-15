@@ -57,9 +57,11 @@ def parse_args() -> argparse.Namespace:
 
 def main():
     args = parse_args()
+        t0 = time.time()
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
     network = network_name(chain_id)
+    elapsed = round(time.time() - t0, 3)
 
     latest = w3.eth.get_block("latest")
     base_fee_wei = int(latest.get("baseFeePerGas", 0))
@@ -85,6 +87,8 @@ def main():
         "effectivePriceGwei": round(eff_price_gwei, 3),
         "gasUsed": gas_used,
         "estimatedCostETH": round(total_eth, 6),
+            out["timingSec"] = elapsed
+
     }
     if args.eth_price is not None:
         out["estimatedCostUSD"] = round(total_eth * args.eth_price, 2)
@@ -100,6 +104,7 @@ def main():
         print(f"💰 Estimated cost: {round(total_eth,6)} ETH", end="")
         if args.eth_price is not None:
             print(f"  (~${round(total_eth * args.eth_price,2)} USD)")
+                    print(f"⏱️  Computation time: {elapsed} seconds")
         else:
             print()
         print()
