@@ -73,8 +73,20 @@ def audit_tx(w3: Web3, tx_hash: str, tip_threshold: float, gas_used_threshold: i
         "flags": flags or None
     }
 
-def main():
+ def main():
     args = parse_args()
+
+    if "your_api_key" in args.rpc:
+        print(
+            "❌ RPC URL appears to still contain the placeholder 'your_api_key'. "
+            "Please set RPC_URL or pass --rpc with a real endpoint.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    w3 = connect(args.rpc)
+    print(f"🕒 Audit initiated at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
+
     w3 = connect(args.rpc)
   print(f"🕒 Audit initiated at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
     hashes = read_tx_hashes(args.file)
