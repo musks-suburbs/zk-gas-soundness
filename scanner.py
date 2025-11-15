@@ -81,7 +81,8 @@ def scan(w3: Web3, blocks: int, step: int,
 
     for n in range(head, start - 1, -step):
         blk = w3.eth.get_block(n, full_transactions=True)
-        base_fee_wei = int(blk.get("baseFeePerGas", 0))
+               base_fee_val = blk.get("baseFeePerGas")
+        base_fee_wei = int(base_fee_val) if base_fee_val is not None else 0
         ts_utc = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(blk.timestamp))
 
         # Iterate transactions in block
@@ -124,7 +125,11 @@ def scan(w3: Web3, blocks: int, step: int,
                     "gasUsed": gas_used,
                     "gasLimit": gas_limit,
                     "gasEfficiencyPct": round(eff, 2) if eff is not None else None,
-                    "baseFeeGwei": float(Web3.from_wei(base_fee_wei, "gwei")),
+                                        "baseFeeGwei": (
+                        float(Web3.from_wei(base_fee_wei, "gwei"))
+                        if base_fee_val is not None
+                        else None
+                    ),
                     "tipGwei": round(tip_gwei, 3),
                     "effectiveGasPriceGwei": float(Web3.from_wei(int(eff_price_wei), "gwei")),
                     "totalFeeETH": round(total_fee_eth, 6),
@@ -188,7 +193,12 @@ def main():
         fl = ",".join(r["flags"])
         print(f"{r['block']} {r['timestampUtc']}  {r['hash']}")
         print(f"  from {r['from']} → {r['to']}  gas {r['gasUsed']}/{r['gasLimit']} ({r['gasEfficiencyPct']}%)")
-        print(f"  base {r['baseFeeGwei']:.3f} G  tip {r['tipGwei']:.3f} G  eff {r['effectiveGasPriceGwei']:.3f} G  fee {r['totalFeeETH']:.6f} ETH  [{fl}]")
+                base_str = f"{r['baseFeeGwei']:.3f}" if r["baseFeeGwei"] is not None else "n/a"
+        print(
+            f"  base {base_str} G  tip {r['tipGwei']:.3f} G  "
+            f"eff {r['effectiveGasPriceGwei']:.3f} G  "
+            f"fee {r['totalFeeETH']:.6f} ETH  [{fl}]"
+        )
 
 if __name__ == "__main__":
     main()
