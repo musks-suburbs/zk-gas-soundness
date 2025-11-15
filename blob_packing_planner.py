@@ -132,6 +132,12 @@ def main():
         sizes = read_sizes_file(args.file)
     sizes = [max(0, s) for s in sizes]
     total_bytes = sum(sizes)
+    if args.gas_used < 0:
+        print(f"❌ --gas-used must be ≥ 0 (got {args.gas_used})", file=sys.stderr)
+        sys.exit(1)
+    if args.tip_gwei < 0:
+        print(f"❌ --tip-gwei must be ≥ 0 (got {args.tip_gwei})", file=sys.stderr)
+        sys.exit(1)
 
     w3 = connect(args.rpc)
     chain_id = int(w3.eth.chain_id)
