@@ -45,7 +45,11 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 def main() -> None:
-    start = time.time()
+  start = time.time()
+w3 = connect(args.rpc)
+print(f"🌐 Connected to {network_name(w3.eth.chain_id)} (chainId {w3.eth.chain_id})")
+print(f"🧮 RPC latency: {round(w3.clientVersion and time.time() - start, 3)}s")  # ← add this
+
     args = parse_args()
 print(f"🕒 Execution start time (UTC): {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}")
 
