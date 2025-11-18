@@ -40,6 +40,9 @@ NETWORKS = {
     59144: "Linea",
     324: "zkSync Era",
 }
+def fmt_gwei(value: float, digits: int = 4) -> float:
+    """Round a Gwei value to a given number of decimal places."""
+    return round(value, digits)
 
 def network_name(cid: int) -> str:
     return NETWORKS.get(cid, f"Unknown (chain ID {cid})")
@@ -150,6 +153,10 @@ if args.blobs > 0 and blob_base_fee_gwei is not None:
     out = {
         "network": network_name(chain_id),
         "chainId": chain_id,
+        "baseFeeGwei": fmt_gwei(base_fee_gwei, 4),
+        "tipGwei": fmt_gwei(args.tip_gwei, 4),
+        "effectivePriceGwei": fmt_gwei(eff_gwei, 4),
+        "blobBaseFeeGwei": fmt_gwei(blob_base_fee_gwei, 6) if blob_base_fee_gwei is not None else None,
         "blockNumber": int(latest.number),
         "timestampUtc": time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(latest.timestamp)),
         "baseFeeGwei": round(base_fee_gwei, 4),
