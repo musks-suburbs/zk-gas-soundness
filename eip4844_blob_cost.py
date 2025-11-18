@@ -87,6 +87,14 @@ def parse_args() -> argparse.Namespace:
 def main():
     start_time = time.time()  
     args = parse_args()
+
+    if "your_api_key" in args.rpc:
+        print(
+            "❌ RPC URL appears to still contain the placeholder 'your_api_key'. "
+            "Set RPC_URL or pass --rpc with a real endpoint.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
     w3 = connect(args.rpc)
     args = parse_args()
     args.gas_used = max(0, args.gas_used)
