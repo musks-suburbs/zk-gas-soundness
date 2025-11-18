@@ -24,6 +24,7 @@ import argparse
 from typing import Optional, Dict
 from web3 import Web3
 
+__version__ = "0.1.0"
 DEFAULT_RPC = os.getenv("RPC_URL", "https://mainnet.infura.io/v3/your_api_key")
 
 NETWORKS = {
@@ -62,6 +63,12 @@ def parse_args() -> argparse.Namespace:
     group.add_argument("--tip-percent", type=float, help="Priority tip as % of base fee (e.g., 0.1 for 10%)")
     p.add_argument("--eth-price", type=float, help="ETH price in USD (optional)")
     p.add_argument("--json", action="store_true", help="Print JSON output")
+        p.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+        help="Show program version and exit",
+    )
     return p.parse_args()
 
 def main():
