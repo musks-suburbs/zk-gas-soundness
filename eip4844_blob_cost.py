@@ -82,6 +82,9 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 def main():
+    start_time = time.time()  
+    args = parse_args()
+    w3 = connect(args.rpc)
     args = parse_args()
     args.gas_used = max(0, args.gas_used)
 args.calldata_bytes = max(0, args.calldata_bytes)
@@ -182,6 +185,7 @@ print(f"🔍 Call data cost equivalent shown when `--calldata-bytes` used")
         print("ℹ️  Notes:")
         for n in out["notes"]:
             print(f"   - {n}")
+    print(f"⏱️  Execution Time: {time.time() - start_time:.2f}s")  # ← paste this line here
 
 if __name__ == "__main__":
     main()
