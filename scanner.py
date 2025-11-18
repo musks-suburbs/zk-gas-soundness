@@ -86,6 +86,8 @@ def scan(w3: Web3, blocks: int, step: int,
 
     for n in range(head, start - 1, -step):
         blk = w3.eth.get_block(n, full_transactions=True)
+        if blk.gasUsed > 25_000_000:
+    print(f"⚠️  High gas usage detected in block {blk.number}: {blk.gasUsed} gas used")
         base_fee_wei = int(blk.get("baseFeePerGas", 0))
 if int(base_fee_wei or 0) == 0:
     # Optional: mark no-1559 path, or skip tip-based flags
