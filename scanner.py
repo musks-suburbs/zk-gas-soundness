@@ -55,7 +55,10 @@ w3.middleware_onion.inject(geth_poa_middleware, layer=0)
     return w3
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Scan recent blocks for gas outlier transactions.")
+    p = argparse.ArgumentParser(
+        description="Scan recent blocks for gas outlier transactions.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
     p.add_argument("--rpc", default=DEFAULT_RPC, help="RPC URL (default from RPC_URL env)")
     p.add_argument("--blocks", type=int, default=300, help="How many recent blocks to scan (default 300)")
     p.add_argument("--step", type=int, default=3, help="Sample every Nth block for speed (default 3)")
