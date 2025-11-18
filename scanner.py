@@ -28,12 +28,15 @@ from web3 import Web3
 DEFAULT_RPC = os.getenv("RPC_URL", "https://mainnet.infura.io/v3/your_api_key")
 __version__ = "0.1.0"
 
-NETWORKS = {
+NETWORKS: Mapping[int, str] = {
     1: "Ethereum Mainnet",
     11155111: "Sepolia Testnet",
     10: "Optimism",
     137: "Polygon",
     42161: "Arbitrum One",
+    8453: "Base",
+    59144: "Linea",
+    324: "zkSync Era",
 }
 
 def network_name(cid: int) -> str:
