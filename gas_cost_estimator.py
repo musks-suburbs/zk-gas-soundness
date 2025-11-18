@@ -76,6 +76,7 @@ if base_fee_gwei > 200:
         tip_gwei = args.tip_gwei
 
     eff_price_gwei = base_fee_gwei + tip_gwei
+    print(f"💡 Estimated cost per gas unit: {round(eff_price_gwei, 3)} Gwei")
     gas_used = args.gas_used
     total_wei = Web3.to_wei(eff_price_gwei, "gwei") * gas_used
    total_eth = float(Web3.from_wei(total_wei, "ether"))
