@@ -120,4 +120,9 @@ print(f"💲 Approximate total cost for all proofs: {total_cost_eth} ETH")
             print(f"- {r['txHash']} | block {r['blockNumber']} | gasUsed {r['gasUsed']} | tip {r['tipGwei']:.2f} Gwei{flagstr}")
 print(f"✅ Audit completed in {round(time.time() - t0, 2)} seconds.")
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n🛑 Audit aborted by user.", file=sys.stderr)
+        sys.exit(1)
+
