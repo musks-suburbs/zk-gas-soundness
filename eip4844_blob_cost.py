@@ -158,6 +158,8 @@ print("🛈 Note: Blob base fee not detected. Using override or fallback may be 
         print(f"   • Blobs (data)    : {out['costsETH']['blobs']}")
     if out["costsETH"]["calldata"] is not None:
         print(f"   • Calldata (data) : {out['costsETH']['calldata']}")
+        print(f"🕒 Cost estimation generated at: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
+
     if out["notes"]:
         print("ℹ️  Notes:")
         for n in out["notes"]:
