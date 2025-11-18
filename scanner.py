@@ -233,7 +233,7 @@ if args.blocks <= 0 or args.step <= 0:
     print(f"🐍 Python version: {sys.version.split()[0]}, Web3.py version: {Web3.__version__}")
 
     t0 = time.time()
-    result = scan(
+        result = scan(
         w3,
         blocks=args.blocks,
         step=args.step,
@@ -244,6 +244,8 @@ if args.blocks <= 0 or args.step <= 0:
         max_report=args.max_report
     )
     elapsed = round(time.time() - t0, 2)
+    result["timingSec"] = elapsed
+
 
     if args.json:
         print(json.dumps({**result, "timingSec": elapsed}, indent=2, sort_keys=True))
