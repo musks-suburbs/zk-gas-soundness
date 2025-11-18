@@ -33,6 +33,9 @@ NETWORKS = {
     10: "Optimism",
     137: "Polygon",
     42161: "Arbitrum One",
+    8453: "Base",
+    59144: "Linea",
+    324: "zkSync Era",
 }
 
 def network_name(cid: int) -> str:
