@@ -133,3 +133,5 @@ print(f"🕒 Execution start time (UTC): {time.strftime('%Y-%m-%d %H:%M:%S', tim
 
 if __name__ == "__main__":
     main()
+with open("gas_log.txt", "a") as f:
+    f.write(f"{datetime.utcnow()} {data['block_number']} {gas_price} {base_fee}\n")
