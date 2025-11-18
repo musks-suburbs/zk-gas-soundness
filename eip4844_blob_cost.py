@@ -87,6 +87,9 @@ def main():
 args.calldata_bytes = max(0, args.calldata_bytes)
 
     w3 = connect(args.rpc)
+    print(f"🔍 RPC connected: {args.rpc}")  
+print(f"🧮 Blob size assumption: {BLOB_SIZE_BYTES} bytes per blob")  
+
     chain_id = int(w3.eth.chain_id)
     latest = w3.eth.get_block("latest")
     base_fee_gwei = float(Web3.from_wei(int(latest.get("baseFeePerGas", 0)), "gwei"))
