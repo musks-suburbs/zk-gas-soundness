@@ -136,7 +136,12 @@ print(f"💲 Approximate total cost for all proofs: {total_cost_eth} ETH")
 
     else:
         print(f"🌐 {network_name(int(w3.eth.chain_id))} (chainId {w3.eth.chain_id})")
-        print("🔍 Proof cost audit results:")
+        print(
+            "🔍 Proof cost audit results "
+            f"(tip threshold {args.tip_threshold} Gwei, "
+            f"gasUsed threshold {args.gas_used_threshold})"
+        )
+
         for r in results:
             flagstr = f"  🏷️ Flags: {','.join(r['flags'])}" if r.get("flags") else ""
             print(f"- {r['txHash']} | block {r['blockNumber']} | gasUsed {r['gasUsed']} | tip {r['tipGwei']:.2f} Gwei{flagstr}")
