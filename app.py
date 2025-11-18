@@ -67,6 +67,10 @@ print(f"🕒 Execution start time (UTC): {time.strftime('%Y-%m-%d %H:%M:%S', tim
     print(f"🕒 Timestamp: {datetime.utcnow().isoformat()}Z")
     print("🔧 zk-gas-soundness")
     print(f"🔗 RPC: {args.rpc}")
+    t0 = time.time()
+w3.eth.block_number
+print(f"⚡ RPC Latency: {(time.time() - t0)*1000:.0f} ms")
+
 
     # Fetch chain ID and network name
     try:
