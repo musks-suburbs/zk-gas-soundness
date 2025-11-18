@@ -72,10 +72,13 @@ if base_fee_gwei > 200:
     print("🚨 Warning: Base fee is unusually high! Network congestion detected.")  # ← paste here
 
 
-    if args.tip_percent is not None:
-        tip_gwei = base_fee_gwei * args.tip_percent
-    else:
-        tip_gwei = args.tip_gwei
+   if args.tip_percent is not None:
+    tip_gwei = base_fee_gwei * args.tip_percent
+else:
+    tip_gwei = args.tip_gwei
+if tip_gwei == 0:  
+    print("💤 No tip provided — transaction may confirm slowly on congested networks.")  # ← paste here
+
 
     eff_price_gwei = base_fee_gwei + tip_gwei
     print(f"💡 Estimated cost per gas unit: {round(eff_price_gwei, 3)} Gwei")
