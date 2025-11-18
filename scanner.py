@@ -41,8 +41,11 @@ def network_name(cid: int) -> str:
 
 def connect(rpc: str) -> Web3:
     w3 = Web3(Web3.HTTPProvider(rpc, request_kwargs={"timeout": 20}))
-    if not w3.is_connected():
-        print("❌ Failed to connect to RPC.", file=sys.stderr)
+      if not w3.is_connected():
+        print(
+            f"❌ Failed to connect to RPC: {rpc}",
+            file=sys.stderr,
+        )
         sys.exit(1)
     # (Optional) better compatibility on some L2/PoA chains:
     from web3.middleware import geth_poa_middleware
