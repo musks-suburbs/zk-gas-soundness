@@ -107,6 +107,9 @@ print("🛈 Note: Blob base fee not detected. Using override or fallback may be 
     print(f"🧾 Tip-to-base fee ratio: {round((args.tip_gwei / base_fee_gwei) * 100, 2)}%")
 
     exec_cost_eth = float(Web3.from_wei(Web3.to_wei(eff_gwei, "gwei") * max(args.gas_used, 0), "ether"))
+    if args.eth_price is not None:
+    print(f"💱 Estimated cost in USD: ~${round(exec_cost_eth * args.eth_price,2)} (excluding data fees)")
+
 
     # Blob data cost: blob_base_fee * blobs * (data gas per blob == 1 unit)
     # In EIP-4844, blob gas is separate; we treat 1 blob gas unit per blob at blobBaseFee.
