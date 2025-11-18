@@ -82,6 +82,9 @@ def main():
 print(f"🛠️ Audit thresholds → Tip > {args.tip_threshold} Gwei | GasUsed > {args.gas_used_threshold}")
 
     w3 = connect(args.rpc)
+  if w3.eth.chain_id != 1:
+    print(f"⚠️  Warning: You are connected to a test network (chainId {w3.eth.chain_id}). Results may differ from mainnet.")
+
   print(f"🕒 Audit initiated at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
     hashes = read_tx_hashes(args.file)
   print(f"🔍 Auditing {len(hashes)} proof transactions…")
