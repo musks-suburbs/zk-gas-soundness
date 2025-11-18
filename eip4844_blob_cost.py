@@ -138,6 +138,8 @@ if args.blobs > 0 and blob_base_fee_gwei is not None:
         },
         "notes": [],
     }
+if calld_cost_eth is not None:
+    print(f"⚠️  Calldata cost (~{round(calld_cost_eth, 6)} ETH) may be much higher than blob cost.")
 
     # Helpful notes
     if args.blobs > 0 and blob_base_fee_gwei is None:
