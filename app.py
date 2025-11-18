@@ -79,6 +79,9 @@ print(f"🕒 Execution start time (UTC): {time.strftime('%Y-%m-%d %H:%M:%S', tim
     # Fetch gas data
     try:
         data = get_latest_gas_data(w3)
+        avg_price = sum(w3.eth.get_block(i).baseFeePerGas for i in range(data["block_number"]-5, data["block_number"])) / 5
+print(f"📈 Avg Base Fee (5 blocks): {w3.from_wei(avg_price, 'gwei'):.2f} gwei")
+
     except Exception as e:
         print(f"❌ {e}")
         sys.exit(2)
