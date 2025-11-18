@@ -37,6 +37,8 @@ NETWORKS = {
     59144: "Linea",
     324: "zkSync Era",
 }
+def fmt_gwei(v: float, digits: int = 3) -> str:
+    return f"{round(v, digits)}"
 
 def network_name(cid: int) -> str:
     return NETWORKS.get(cid, f"Unknown (chain ID {cid})")
@@ -129,9 +131,9 @@ if total_eth < 0.001:
         print(json.dumps(out, indent=2, sort_keys=True))
     else:
         print(f"🌐 {network} (chainId {chain_id})")
-        print(f"⛽ Base Fee: {round(base_fee_gwei,3)} Gwei")
-        print(f"🎁 Tip: {round(tip_gwei,3)} Gwei")
-        print(f"⚙️  Effective Price: {round(eff_price_gwei,3)} Gwei")
+              print(f"⛽ Base Fee: {fmt_gwei(base_fee_gwei)} Gwei")
+        print(f"🎁 Tip ({tip_mode}): {fmt_gwei(tip_gwei)} Gwei")
+        print(f"⚙️  Effective Price: {fmt_gwei(eff_price_gwei)} Gwei")
         print(f"📦 Gas Used: {gas_used}")
         print(f"💰 Estimated cost: {round(total_eth,6)} ETH", end="")
         if args.eth_price is not None:
