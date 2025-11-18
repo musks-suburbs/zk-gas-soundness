@@ -118,7 +118,8 @@ if total_eth < 0.001:
         "gasUsed": gas_used,
         "estimatedCostETH": round(total_eth, 6),
     }
-    if args.eth_price is not None:
+       if args.eth_price is not None:
+        out["ethPriceUSD"] = float(args.eth_price)
         out["estimatedCostUSD"] = round(total_eth * args.eth_price, 2)
 
     if args.json:
