@@ -148,7 +148,10 @@ def main():
     # Packing
     bins = first_fit_decreasing_binpack(sizes, BLOB_SIZE_BYTES)
     blob_count = len(bins)
+print(f"📦 Payloads total: {len(sizes)}  →  Blobs used: {blob_count}")  # existing line
 
+util_pct = round((total_bytes / (blob_count * BLOB_SIZE_BYTES)) * 100, 2) if blob_count > 0 else 0
+print(f"📊 Packing Utilization: {util_pct}% of blob capacity used")  # ← new lines
     # Costs
     eff_gwei = base_fee_gwei + args.tip_gwei
     exec_cost_eth = float(Web3.from_wei(Web3.to_wei(eff_gwei, "gwei") * max(0, args.gas_used), "ether"))
