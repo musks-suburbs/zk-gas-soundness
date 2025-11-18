@@ -186,6 +186,7 @@ gas_eff = (gas_used / gas_limit * 100.0) if gas_limit else None
     return {
         "network": network_name(int(w3.eth.chain_id)),
         "chainId": int(w3.eth.chain_id),
+            outliers.sort(key=lambda r: (-r["totalFeeETH"], -r["block"]))
         "head": head,
         "scannedBlocks": scanned,
         "sampleStep": step,
@@ -234,7 +235,7 @@ if args.blocks <= 0 or args.step <= 0:
     if not result["outliers"]:
         print("✅ No outliers found under current thresholds.")
         return
-
+"outliers": outliers
     print("\n— Outliers —")
     for r in result["outliers"]:
         fl = ",".join(r["flags"])
