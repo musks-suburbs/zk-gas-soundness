@@ -66,6 +66,9 @@ def main():
     if base_fee_wei == 0:
         print("⚠️  This network may not support EIP-1559 (no baseFeePerGas).")
     base_fee_gwei = float(Web3.from_wei(base_fee_wei, "gwei"))
+if base_fee_gwei > 200:  
+    print("🚨 Warning: Base fee is unusually high! Network congestion detected.")  # ← paste here
+
 
     if args.tip_percent is not None:
         tip_gwei = base_fee_gwei * args.tip_percent
