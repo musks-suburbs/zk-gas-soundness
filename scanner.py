@@ -96,7 +96,14 @@ if int(base_fee_wei or 0) == 0:
         # Iterate transactions in block
         for tx in blk.transactions:
             try:
-                rcpt = w3.eth.get_transaction_receipt(tx["hash"])
+               for _ in range(2):
+    try:
+        rcpt = w3.eth.get_transaction_receipt(tx["hash"])
+        break
+    except Exception:
+        rcpt = None
+if rcpt is None:
+    continue
             except Exception:
                 continue
             if rcpt is None or rcpt.blockNumber is None:
