@@ -87,7 +87,7 @@ def parse_args() -> argparse.Namespace:
     )
     return p.parse_args()
 
-def tx_tip_gwei(tx: Dict[str, Any], base_fee_wei: int, rcpt: Dict[str, Any]) -> float:
+def tx_tip_gwei(tx: Dict[str, Any], base_fee_wei: int, rcpt: Any) -> float:
     # Prefer receipt effectiveGasPrice if available (EIP-1559)
     eff = getattr(rcpt, "effectiveGasPrice", None)
     if eff is None:
