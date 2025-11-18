@@ -51,7 +51,10 @@ def connect(rpc: str) -> Web3:
     return w3
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Estimate ETH cost for a contract call given gasUsed and tip.")
+    p = argparse.ArgumentParser(
+        description="Estimate ETH cost for a contract call given gasUsed and tip.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
     p.add_argument("--rpc", default=DEFAULT_RPC, help="RPC URL")
     p.add_argument("--gas-used", type=int, required=True, help="Estimated gasUsed for the operation")
     group = p.add_mutually_exclusive_group(required=True)
