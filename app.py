@@ -111,7 +111,8 @@ print(f"💸 Current Gas Price: {float(w3.from_wei(gas_price, 'gwei')):.2f} gwei
 
     # Ratio check
     if base_fee:
-        ratio = float(gas_price) / float(base_fee)
+       ratio = float(gas_price) / float(base_fee) if base_fee else None
+
         print(f"📊 Ratio (gas_price/base_fee): {ratio:.2f}x")
         if ratio > 2.0:
             print("⚠️ Gas price is unusually high compared to base fee.")
