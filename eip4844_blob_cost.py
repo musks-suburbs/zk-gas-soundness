@@ -24,6 +24,7 @@ import argparse
 from typing import Optional
 from web3 import Web3
 
+DATA_GAS_PER_BLOB = 131072
 DEFAULT_RPC = os.getenv("RPC_URL", "https://mainnet.infura.io/v3/your_api_key")
 BLOB_SIZE_BYTES = 131072  # 128 KiB per blob (EIP-4844)
 CALLDATA_GAS_PER_BYTE = 16  # worst-case (non-zero byte)
@@ -105,9 +106,8 @@ print("🛈 Note: Blob base fee not detected. Using override or fallback may be 
     # Blob data cost: blob_base_fee * blobs * (data gas per blob == 1 unit)
     # In EIP-4844, blob gas is separate; we treat 1 blob gas unit per blob at blobBaseFee.
     blob_cost_eth = None
-    if args.blobs > 0 and blob_base_fee_gwei is not None:
-        blob_cost_eth = float(Web3.from_wei(Web3.to_wei(blob_base_fee_gwei, "gwei") * args.blobs, "ether"))
-
+if args.blobs > 0 and blob_base_fee_gwei is not None:
+    blob_cost_eth = float(Web3.from_wei(Web3.to_wei(blob_base_fee_gwei, "gwei") * args.blobs * DATA_GAS_PER_BLOB, "ether"))
     # Calldata cost (conservative): calldata bytes * 16 gas/byte at (base+tip)
     calld_cost_eth = None
     if args.calldata_bytes > 0:
