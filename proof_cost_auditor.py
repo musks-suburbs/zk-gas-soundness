@@ -84,7 +84,7 @@ print(f"💰 Estimated cost of this proof tx: {round(cost_eth, 6)} ETH – flags
         "gasUsed": gas_used,
         "effectiveGasPriceGwei": float(Web3.from_wei(eff_price, "gwei")),
         "tipGwei": float(Web3.from_wei(tip_per_gas, "gwei")),
-        "flags": flags or None
+                "flags": flags,
     }
 
 def main():
