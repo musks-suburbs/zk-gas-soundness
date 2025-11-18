@@ -13,7 +13,7 @@ What it does:
 
 Usage:
   python gas_cost_estimator.py --rpc https://mainnet.infura.io/v3/<KEY> --gas-used 5_000_000 --tip-gwei 2
-  python gas_cost_estimator.py --rpc ... --gas-used 2000000 --tip-percent 0.2 --eth-price 1900
+   python gas_cost_estimator.py --rpc ... --gas-used 2000000 --tip-percent 0.1 --eth-price 1900
 """
 
 import os
