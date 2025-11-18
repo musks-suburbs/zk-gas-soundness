@@ -245,6 +245,16 @@ if args.blocks <= 0 or args.step <= 0:
             f"gas {r['gasUsed']}/{r['gasLimit']} ({r['gasEfficiencyPct']}%)"
         )
         print(f"  base {r['baseFeeGwei']:.3f} G  tip {r['tipGwei']:.3f} G  eff {r['effectiveGasPriceGwei']:.3f} G  fee {r['totalFeeETH']:.6f} ETH  [{fl}]")
+    # Summary of flags
+    flag_counts: Dict[str, int] = {}
+ 
+        for f in r["flags"]:
+            flag_counts[f] = flag_counts.get(f, 0) + 1
+
+    if flag_counts:
+        print("\n— Flag summary —")
+        for name, count in sorted(flag_counts.items(), key=lambda kv: kv[0]):
+            print(f"{name}: {count}")
 
 if __name__ == "__main__":
     try:
