@@ -82,6 +82,9 @@ print(f"🛠️ Audit thresholds → Tip > {args.tip_threshold} Gwei | GasUsed >
   print(f"🕒 Audit initiated at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())} UTC")
     hashes = read_tx_hashes(args.file)
     results = [audit_tx(w3, h, args.tip_threshold, args.gas_used_threshold) for h in hashes]
+  total_cost_eth = round(sum(r["gasUsed"] * r["effectiveGasPriceGwei"] for r in results) / 1e9 / 1_000_000_000, 6)
+print(f"💲 Approximate total cost for all proofs: {total_cost_eth} ETH")
+
 
     if args.json:
         print(json.dumps(results, indent=2, sort_keys=True))
