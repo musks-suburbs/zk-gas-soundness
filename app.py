@@ -97,8 +97,9 @@ print(f"📈 Avg Base Fee (5 blocks): {w3.from_wei(avg_price, 'gwei'):.2f} gwei"
 
     print(f"🧱 Block: {data['block_number']}")
     if base_fee is not None:
-        print(f"⛽ Base Fee: {w3.from_wei(base_fee, 'gwei')} gwei")
-    print(f"💸 Current Gas Price: {w3.from_wei(gas_price, 'gwei')} gwei")
+     print(f"⛽ Base Fee: {float(w3.from_wei(base_fee, 'gwei')):.2f} gwei")
+print(f"💸 Current Gas Price: {float(w3.from_wei(gas_price, 'gwei')):.2f} gwei")
+
 
     # ✅ New: Display approximate gas price in USD for clarity
     try:
