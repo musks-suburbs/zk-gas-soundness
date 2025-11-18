@@ -133,6 +133,9 @@ def main():
     else:
         sizes = read_sizes_file(args.file)
     sizes = [max(0, s) for s in sizes]
+    if any(s > BLOB_SIZE_BYTES for s in sizes):
+    raise ValueError(f"Payload exceeds blob capacity ({BLOB_SIZE_BYTES} bytes); split payloads before packing.")
+
     total_bytes = sum(sizes)
     print(f"📊 Payload size summary: min={min(sizes)} bytes, max={max(sizes)} bytes")
 
