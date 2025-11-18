@@ -53,10 +53,15 @@ def connect(rpc: str) -> Web3:
 
 def try_get_blob_base_fee_gwei(w3: Web3) -> Optional[float]:
     """
-    Try common places for blob base fee:
-      - block['blobBaseFeePerGas'] (some clients)
-      - eth_blobBaseFee (non-standard RPC on some providers)
+    Try to obtain the blob base fee (in Gwei) from the connected node.
+
+    Attempts, in order:
+      - latest block's 'blobBaseFeePerGas' field (if present)
+      - 'eth_blobBaseFee' RPC method (non-standard, some providers)
+    Returns:
+      float blob base fee in Gwei, or None if it cannot be determined.
     """
+
     try:
         latest = w3.eth.get_block("latest")
         v = latest.get("blobBaseFeePerGas", None)
