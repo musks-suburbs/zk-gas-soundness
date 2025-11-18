@@ -21,7 +21,7 @@ import sys
 import time
 import json
 import argparse
-from typing import Optional, Dict
+from typing import Dict
 from web3 import Web3
 
 __version__ = "0.1.0"
