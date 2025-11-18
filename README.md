@@ -11,6 +11,12 @@ It provides fast insight into network fee health and can detect anomalies or con
 - Works with Ethereum, L2s, and testnets  
 - JSON output for integration with dashboards or CI/CD pipelines  
 
+## Prerequisites  
+- Python 3.9+ (tested)  
+- web3.py version 6.x  
+- Access to an Ethereum-compatible RPC endpoint (mainnet or supported L2)  
+- Optional: blobBaseFee support for EIP-4844 networks  
+
 ## Installation
 1. Requires Python 3.9+  
 2. Install dependencies:
