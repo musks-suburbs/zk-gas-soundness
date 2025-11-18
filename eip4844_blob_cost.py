@@ -146,10 +146,19 @@ if args.blobs > 0 and blob_base_fee_gwei is not None:
     if args.calldata_bytes > 0:
         calldata_gas = args.calldata_bytes * CALLDATA_GAS_PER_BYTE
         calld_cost_eth = float(Web3.from_wei(Web3.to_wei(eff_gwei, "gwei") * calldata_gas, "ether"))
+    implied_blobs_from_calldata = None
+    if args.calldata_bytes > 0:
+        implied_blobs_from_calldata = (args.calldata_bytes + BLOB_SIZE_BYTES - 1) // BLOB_SIZE_BYTES
 
     out = {
         "network": network_name(chain_id),
         "chainId": chain_id,
+                "inputs": {
+            "gasUsed": args.gas_used,
+            "blobs": args.blobs,
+            "calldataBytes": args.calldata_bytes,
+            "impliedBlobsFromCalldata": implied_blobs_from_calldata,
+        },
         "blockNumber": int(latest.number),
         "timestampUtc": time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(latest.timestamp)),
         "baseFeeGwei": round(base_fee_gwei, 4),
