@@ -97,6 +97,10 @@ print(f"🕒 Execution start time (UTC): {time.strftime('%Y-%m-%d %H:%M:%S', tim
         print(f"📊 Ratio (gas_price/base_fee): {ratio:.2f}x")
         if ratio > 2.0:
             print("⚠️ Gas price is unusually high compared to base fee.")
+              # New: Warn if gas price is unexpectedly lower than base fee
+        if gas_price < base_fee:
+            print("⚠️ Gas price is lower than base fee — check RPC accuracy or chain sync.")
+            print("⚠️ Gas price is unusually high compared to base fee.")
     else:
         print("⚠️ No base fee data available (legacy chain or RPC).")
 
