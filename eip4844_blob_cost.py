@@ -26,6 +26,7 @@ from web3 import Web3
 
 DATA_GAS_PER_BLOB = 131072
 DEFAULT_RPC = os.getenv("RPC_URL", "https://mainnet.infura.io/v3/your_api_key")
+DEFAULT_TIP_GWEI = float(os.getenv("BLOB_TIP_GWEI", "1.0"))
 BLOB_SIZE_BYTES = 131072  # 128 KiB per blob (EIP-4844)
 CALLDATA_GAS_PER_BYTE = 16  # worst-case (non-zero byte)
 # For calldata, you could refine to ~4/16 split for zero/non-zero, but keep conservative here.
@@ -85,7 +86,12 @@ def parse_args() -> argparse.Namespace:
     )
     p.add_argument("--rpc", default=DEFAULT_RPC, help="RPC URL (default RPC_URL env)")
     p.add_argument("--gas-used", type=int, default=0, help="Estimated execution gas (excludes data gas)")
-    p.add_argument("--tip-gwei", type=float, default=1.0, help="Priority tip in Gwei (default 1.0)")
+      p.add_argument(
+        "--tip-gwei",
+        type=float,
+        default=DEFAULT_TIP_GWEI,
+        help="Priority tip in Gwei",
+    )
     p.add_argument("--blobs", type=int, default=0, help="Number of blobs to post (EIP-4844)")
     p.add_argument("--blob-base-fee-gwei", type=float, help="Override blob base fee in Gwei (if node doesn’t expose it)")
     p.add_argument("--calldata-bytes", type=int, default=0, help="Alternative data size as calldata bytes (for compare)")
