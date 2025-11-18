@@ -90,6 +90,8 @@ def main():
     blob_base_fee_gwei = args.blob_base_fee_gwei
     if blob_base_fee_gwei is None:
         blob_base_fee_gwei = try_get_blob_base_fee_gwei(w3)
+        if blob_base_fee_gwei is None:
+print("🛈 Note: Blob base fee not detected. Using override or fallback may be required.")
 
     # Execution gas cost (EIP-1559): (base + tip) * gas_used
     eff_gwei = base_fee_gwei + args.tip_gwei
