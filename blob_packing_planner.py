@@ -89,16 +89,24 @@ def parse_sizes_arg(s: str) -> List[int]:
 
 def read_sizes_file(path: str) -> List[int]:
     out: List[int] = []
-    with open(path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip().replace("_", "")
-            if not line:
-                continue
-            n = int(line)
-            if n < 0:
-                raise ValueError("Sizes must be non-negative")
-            out.append(n)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip().replace("_", "")
+                if not line:
+                    continue
+                n = int(line)
+                if n < 0:
+                    raise ValueError("Sizes must be non-negative")
+                out.append(n)
+    except FileNotFoundError:
+        print(f"❌ File not found: {path}", file=sys.stderr)
+        sys.exit(1)
+    except OSError as e:
+        print(f"❌ Failed to read file {path}: {e}", file=sys.stderr)
+        sys.exit(1)
     return out
+
 
 def first_fit_decreasing_binpack(sizes: List[int], bin_cap: int) -> List[List[int]]:
     """Return bins; each bin is a list of indices of sizes placed into that blob."""
