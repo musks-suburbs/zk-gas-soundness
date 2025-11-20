@@ -228,15 +228,16 @@ print(f"📊 Average payload per blob: {round(total_bytes/blob_count if blob_cou
             "blobs": round(blob_cost_eth, 8) if blob_cost_eth is not None else None,
             "calldata": round(calldata_cost_eth, 8),
         },
-        "bins": [
+            "bins": [
             {
                 "blobIndex": i,
                 "payloadIndices": bin_,
-                "payloadBytes": sum(sizes[j] for j in bin_),
-                "freeBytes": BLOB_SIZE_BYTES - sum(sizes[j] for j in bin_),
+                "payloadBytes": sum_bytes := sum(sizes[j] for j in bin_),
+                "freeBytes": BLOB_SIZE_BYTES - sum_bytes,
             }
             for i, bin_ in enumerate(bins)
         ],
+
         "notes": [],
     }
 
