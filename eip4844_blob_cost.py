@@ -242,4 +242,8 @@ print(f"🔍 Call data cost equivalent shown when `--calldata-bytes` used")
     print(f"⏱️  Execution Time: {time.time() - start_time:.2f}s")  # ← paste this line here
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n🛑 Aborted by user.", file=sys.stderr)
+        sys.exit(1)
