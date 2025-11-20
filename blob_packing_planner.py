@@ -137,6 +137,15 @@ def main():
     args.gas_used = max(0, int(args.gas_used))
 
 
+    if "your_api_key" in args.rpc:
+        print(
+            "❌ RPC URL appears to still contain the placeholder 'your_api_key'. "
+            "Set RPC_URL or pass --rpc with a real endpoint.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+
     # Read and validate sizes
     if args.sizes:
         sizes = parse_sizes_arg(args.sizes)
