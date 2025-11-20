@@ -64,7 +64,11 @@ def try_get_blob_base_fee_gwei(w3: Web3) -> Optional[float]:
     """
 
     try:
+            try:
         latest = w3.eth.get_block("latest")
+    except Exception as e:
+        print(f"❌ Failed to fetch latest block: {e}", file=sys.stderr)
+        sys.exit(1)
         v = latest.get("blobBaseFeePerGas", None)
             gas_price_wei = int(w3.eth.gas_price)
     gas_price_gwei = float(Web3.from_wei(gas_price_wei, "gwei"))
