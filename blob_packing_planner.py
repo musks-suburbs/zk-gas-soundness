@@ -90,7 +90,10 @@ def parse_sizes_arg(s: str) -> List[int]:
             raise ValueError("Sizes must be non-negative")
         out.append(n)
     return out
-
+    avg_utilization = None
+    if blob_count > 0:
+        used_bytes = total_bytes
+        avg_utilization = used_bytes / (blob_count * BLOB_SIZE_BYTES)
 def read_sizes_file(path: str) -> List[int]:
     out: List[int] = []
     try:
@@ -236,6 +239,13 @@ print(f"📊 Average payload per blob: {round(total_bytes/blob_count if blob_cou
                 "freeBytes": BLOB_SIZE_BYTES - sum_bytes,
             }
             for i, bin_ in enumerate(bins)
+                    "totals": {
+            "payloadBytes": total_bytes,
+            "blobCount": blob_count,
+            "totalFreeBytes": total_free_bytes,
+            "avgBlobUtilization": round(avg_utilization, 4) if avg_utilization is not None else None,
+        },
+
         ],
 
         "notes": [],
