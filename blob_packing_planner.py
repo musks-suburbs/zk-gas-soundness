@@ -28,6 +28,7 @@ from web3 import Web3
 
 __version__ = "0.1.0"
 DEFAULT_RPC = os.getenv("RPC_URL", "https://mainnet.infura.io/v3/your_api_key")
+DEFAULT_TIP_GWEI = float(os.getenv("BLOB_TIP_GWEI", "1.0"))
 BLOB_SIZE_BYTES = 131072        # 128 KiB per blob (EIP-4844)
 DATA_GAS_PER_BLOB = 131072      # Blob gas units per blob (per spec)
 CALLDATA_GAS_PER_BYTE = 16      # Conservative (non-zero byte)
@@ -143,7 +144,12 @@ def parse_args() -> argparse.Namespace:
     grp.add_argument("--sizes", help="Comma-separated payload sizes in bytes (e.g., 180000,64000,90000)")
     grp.add_argument("--file", help="File with one payload size (bytes) per line")
     ap.add_argument("--gas-used", type=int, default=0, help="Estimated execution gas (excludes data gas)")
-    ap.add_argument("--tip-gwei", type=float, default=1.0, help="Priority tip (Gwei)")
+        ap.add_argument(
+        "--tip-gwei",
+        type=float,
+        default=DEFAULT_TIP_GWEI,
+        help="Priority tip (Gwei)",
+    )
     ap.add_argument("--blob-base-fee-gwei", type=float, help="Override blob base fee (Gwei)")
     ap.add_argument("--json", action="store_true", help="Print JSON only")
         ap.add_argument(
