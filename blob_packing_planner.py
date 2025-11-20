@@ -26,6 +26,7 @@ import argparse
 from typing import List, Dict, Any, Optional
 from web3 import Web3
 
+__version__ = "0.1.0"
 DEFAULT_RPC = os.getenv("RPC_URL", "https://mainnet.infura.io/v3/your_api_key")
 BLOB_SIZE_BYTES = 131072        # 128 KiB per blob (EIP-4844)
 DATA_GAS_PER_BLOB = 131072      # Blob gas units per blob (per spec)
@@ -123,6 +124,12 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--tip-gwei", type=float, default=1.0, help="Priority tip (Gwei)")
     ap.add_argument("--blob-base-fee-gwei", type=float, help="Override blob base fee (Gwei)")
     ap.add_argument("--json", action="store_true", help="Print JSON only")
+        ap.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+        help="Show program version and exit",
+    )
     return ap.parse_args()
 
 def main():
