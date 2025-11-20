@@ -111,7 +111,10 @@ def first_fit_decreasing_binpack(sizes: List[int], bin_cap: int) -> List[List[in
     return bins
 
 def parse_args() -> argparse.Namespace:
-    ap = argparse.ArgumentParser(description="Pack proof payloads into blobs and estimate blob vs calldata cost.")
+    ap = argparse.ArgumentParser(
+        description="Pack proof payloads into blobs and estimate blob vs calldata cost.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
     ap.add_argument("--rpc", default=DEFAULT_RPC, help="RPC URL (default from RPC_URL env)")
     grp = ap.add_mutually_exclusive_group(required=True)
     grp.add_argument("--sizes", help="Comma-separated payload sizes in bytes (e.g., 180000,64000,90000)")
