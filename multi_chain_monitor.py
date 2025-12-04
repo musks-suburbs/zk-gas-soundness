@@ -82,6 +82,12 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_LOW_RATIO,
         help=f"Threshold for marking a chain as 'underpriced'. Default={DEFAULT_LOW_RATIO}",
     )
+    parser.add_argument(
+        "--timeout",
+        type=float,
+        default=8.0,
+        help="HTTP RPC timeout in seconds. Default=8.0",
+    )
 
     return parser.parse_args()
 
@@ -142,9 +148,10 @@ def probe_rpc(
     rpc_url: str,
     high: float,
     low: float,
+    timeout: float,
 ) -> Dict[str, Any]:
     start = time.time()
-    w3 = Web3(Web3.HTTPProvider(rpc_url, request_kwargs={"timeout": 8}))
+       w3 = Web3(Web3.HTTPProvider(rpc_url, request_kwargs={"timeout": timeout}))
 
     result: Dict[str, Any] = {
         "rpc": rpc_url,
@@ -275,9 +282,11 @@ def main() -> None:
     args = parse_args()
     rpcs, names = resolve_rpcs_and_names(args)
 
-    results: List[Dict[str, Any]] = [
-        probe_rpc(rpc, args.warn_ratio_high, args.warn_ratio_low) for rpc in rpcs
+       results: List[Dict[str, Any]] = [
+        probe_rpc(rpc, args.warn_ratio_high, args.warn_ratio_low, args.timeout)
+        for rpc in rpcs
     ]
+
 
     timestamp = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())
 
