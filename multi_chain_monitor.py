@@ -218,8 +218,9 @@ def format_human_table(
     ]
 
     # Build rows with string representation
-    data_rows: List[List[str]] = []
-    for name, row in zip(names, rows):
+      data_rows: List[List[str]] = []
+    for fallback_name, row in zip(names, rows):
+        name = row.get("name") or fallback_name
         if not row["ok"]:
             data_rows.append(
                 [
@@ -234,6 +235,7 @@ def format_human_table(
                 ]
             )
             continue
+
 
         base_fee = (
             f"{row['base_fee_gwei']:.2f}" if row["base_fee_gwei"] is not None else "N/A"
@@ -275,9 +277,16 @@ def main() -> None:
     args = parse_args()
     rpcs, names = resolve_rpcs_and_names(args)
 
-    results: List[Dict[str, Any]] = [
-        probe_rpc(rpc, args.warn_ratio_high, args.warn_ratio_low) for rpc in rpcs
-    ]
+      results: List[Dict[str, Any]] = []
+    for rpc, name in zip(rpcs, names):
+        probe_result = probe_rpc(
+            rpc,
+            args.warn_ratio_high,
+            args.warn_ratio_low,
+            args.timeout,
+        )
+        probe_result["name"] = name
+        results.append(probe_result)
 
     timestamp = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())
 
