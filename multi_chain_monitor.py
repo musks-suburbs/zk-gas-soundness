@@ -27,6 +27,7 @@ import os
 import sys
 import time
 from typing import Any, Dict, List, Optional
+from urllib.parse import urlparse
 
 from web3 import Web3
 
@@ -107,11 +108,9 @@ def resolve_rpcs_and_names(args: argparse.Namespace) -> (List[str], List[str]):
         if i < len(names):
             resolved_names.append(names[i])
         else:
-            # Try to derive a simple name from hostname
-            try:
-                host = rpc.split("://", 1)[1]
-            except IndexError:
-                host = rpc
+            # Derive a simple name from hostname (e.g. "mainnet.infura.io")
+            parsed = urlparse(rpc)
+            host = parsed.hostname or rpc
             resolved_names.append(host)
 
     return rpcs, resolved_names
