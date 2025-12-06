@@ -275,9 +275,20 @@ def main() -> None:
     args = parse_args()
     rpcs, names = resolve_rpcs_and_names(args)
 
-    results: List[Dict[str, Any]] = [
-        probe_rpc(rpc, args.warn_ratio_high, args.warn_ratio_low) for rpc in rpcs
-    ]
+      results: List[Dict[str, Any]] = []
+    for rpc, name in zip(rpcs, names):
+        probe_result = probe_rpc(
+            rpc,
+            args.warn_ratio_high,
+            args.warn_ratio_low,
+            args.timeout,
+        )
+        probe_result["name"] = name
+        results.append(probe_result)
+
+    # Sort by name for stable, readable output
+    combined = sorted(zip(names, results), key=lambda pair: pair[0])
+    names, results = [c[0] for c in combined], [c[1] for c in combined]
 
     timestamp = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())
 
