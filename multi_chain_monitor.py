@@ -26,7 +26,8 @@ import json
 import os
 import sys
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
+
 
 from web3 import Web3
 
@@ -86,7 +87,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def resolve_rpcs_and_names(args: argparse.Namespace) -> (List[str], List[str]):
+def resolve_rpcs_and_names(args: argparse.Namespace) -> Tuple[List[str], List[str]]:
     rpcs: List[str] = args.rpcs or []
     names: List[str] = args.names or []
 
