@@ -257,6 +257,12 @@ def parse_args() -> argparse.Namespace:
         action="version",
         version=f"%(prog)s {__version__}",
     )
+        p.add_argument(
+        "--dump-blocks",
+        action="store_true",
+        help="Include sampled block numbers in JSON output (sampledBlockNumbers).",
+    )
+
     return p.parse_args()
 
 
