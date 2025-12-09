@@ -252,6 +252,12 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Output JSON instead of human-readable text.",
     )
+        p.add_argument(
+        "--max-blocks",
+        type=int,
+        default=100_000,
+        help="Hard limit for --blocks to avoid accidental RPC abuse.",
+    )
     p.add_argument(
         "--version",
         action="version",
@@ -276,9 +282,9 @@ def main() -> int:
         return 1
 
     # Simple guardrail to avoid accidental RPC abuse
-    if args.blocks > 100_000:
+    if args.blocks > args.max_blocks:
         print(
-            "❌ --blocks is extremely large (> 100000); refusing to run.",
+            f"❌ --blocks is extremely large (> {args.max_blocks}); refusing to run.",
             file=sys.stderr,
         )
         return 1
