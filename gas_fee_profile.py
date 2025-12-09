@@ -169,7 +169,9 @@ def analyze(
     else:
         block_time_avg = 0.0
 
-    zero_tip_count = sum(1 for x in tips if x == 0.0)
+       zero_tip_share_pct = (
+        (zero_tip_count / len(tips)) * 100.0 if tips else 0.0
+    )
 
     try:
         cid = int(w3.eth.chain_id)
@@ -198,13 +200,14 @@ def analyze(
             "max": round(max(eff_prices), 3) if eff_prices else 0.0,
             "count": len(eff_prices),
         },
-        "tipGweiApprox": {
+             "tipGweiApprox": {
             "p50": round(median(tips), 3) if tips else 0.0,
             "p95": round(pct(tips, 0.95), 3) if tips else 0.0,
             "min": round(min(tips), 3) if tips else 0.0,
             "max": round(max(tips), 3) if tips else 0.0,
             "count": len(tips),
             "countZero": zero_tip_count,
+            "zeroTipSharePct": round(zero_tip_share_pct, 2),
         },
     }
 
