@@ -123,7 +123,10 @@ def analyze(
       - effectivePriceGwei {p50, p95, min, max, count}
       - tipGweiApprox      {p50, p95, min, max, count, countZero}
     """
-    head = int(head_override) if head_override is not None else int(w3.eth.block_number)
+      current_tip = int(w3.eth.block_number)
+    head = int(head_override) if head_override is not None else current_tip
+    if head > current_tip:
+        head = current_tip
     start = max(0, head - blocks + 1)
     t0 = time.time()
 
