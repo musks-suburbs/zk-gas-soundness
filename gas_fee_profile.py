@@ -131,10 +131,12 @@ def analyze(
     eff_prices: List[float] = []
     tips: List[float] = []
 
-    print(
-        f"🔍 Scanning the last {blocks} blocks (every {step}th block)...",
-        file=sys.stderr,
-    )
+     if not getattr(w3, "_zk_gas_soundness_quiet", False):
+        print(
+            f"🔍 Scanning the last {blocks} blocks (every {step}th block)...",
+            file=sys.stderr,
+        )
+
 
     # Iterate backwards in steps for speed
     for n in range(head, start - 1, -step):
@@ -242,6 +244,12 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_TIMEOUT,
         help="HTTP RPC timeout in seconds.",
     )
+        p.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress progress logs on stderr (only errors + final summary).",
+    )
+
     p.add_argument(
         "--head",
         type=int,
@@ -252,6 +260,12 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Output JSON instead of human-readable text.",
     )
+    p.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress progress logs on stderr (only errors + final summary).",
+    )
+
     p.add_argument(
         "--version",
         action="version",
@@ -264,12 +278,13 @@ def main() -> int:
     args = parse_args()
 
     # High-level run info → stderr so stdout can be clean
-    print(
-        f"📅 Gas fee profile run at UTC: "
-        f"{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}",
-        file=sys.stderr,
-    )
-    print(f"⚙️ Using RPC endpoint: {args.rpc}", file=sys.stderr)
+        if not args.quiet:
+        print(
+            f"📅 Gas fee profile run at UTC: "
+            f"{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())}",
+            file=sys.stderr,
+        )
+        print(f"⚙️ Using RPC endpoint: {args.rpc}", file=sys.stderr)
 
     if args.blocks <= 0 or args.step <= 0:
         print("❌ --blocks and --step must be > 0", file=sys.stderr)
