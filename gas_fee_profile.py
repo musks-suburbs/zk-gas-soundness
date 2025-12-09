@@ -252,6 +252,10 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Output JSON instead of human-readable text.",
     )
+        p.add_argument(
+        "--network-label",
+        help="Optional override for the detected network name in output.",
+    )
     p.add_argument(
         "--version",
         action="version",
@@ -293,6 +297,8 @@ def main() -> int:
 
     w3 = connect(args.rpc, timeout=args.timeout)
     result = analyze(w3, args.blocks, args.step, args.head)
+    if args.network_label:
+        result["network"] = args.network_label
 
     if result["sampledBlocks"] == 0:
         print(
