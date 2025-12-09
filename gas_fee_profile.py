@@ -252,6 +252,12 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Output JSON instead of human-readable text.",
     )
+        p.add_argument(
+        "--fail-on-empty",
+        action="store_true",
+        help="Exit with code 2 if no blocks could be sampled.",
+    )
+
     p.add_argument(
         "--version",
         action="version",
@@ -299,6 +305,8 @@ def main() -> int:
             "⚠️  No blocks were sampled. Check --blocks/--step and head range.",
             file=sys.stderr,
         )
+        if args.fail_on_empty:
+            return 2
 
     if args.json:
         payload = {
