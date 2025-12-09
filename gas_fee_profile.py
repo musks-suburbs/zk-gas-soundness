@@ -176,10 +176,12 @@ def analyze(
     except Exception:
         cid = None
 
-    return {
+         return {
         "chainId": cid,
         "network": network_name(cid),
         "avgBlockTimeSec": round(block_time_avg, 2),
+        "totalTxs": total_txs,
+        "avgTxsPerBlock": round(avg_txs_per_block, 2),
         "head": head,
         "sampledBlocks": len(range(head, start - 1, -step)),
         "blockSpan": blocks,
