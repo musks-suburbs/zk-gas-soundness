@@ -185,22 +185,25 @@ def analyze(
         "blockSpan": blocks,
         "step": step,
         "timingSec": round(elapsed, 2),
-        "baseFeeGwei": {
+               "baseFeeGwei": {
             "p50": round(median(basefees), 3) if basefees else 0.0,
             "p95": round(pct(basefees, 0.95), 3) if basefees else 0.0,
+            "p99": round(pct(basefees, 0.99), 3) if basefees else 0.0,
             "min": round(min(basefees), 3) if basefees else 0.0,
             "max": round(max(basefees), 3) if basefees else 0.0,
         },
-        "effectivePriceGwei": {
+                "effectivePriceGwei": {
             "p50": round(median(eff_prices), 3) if eff_prices else 0.0,
             "p95": round(pct(eff_prices, 0.95), 3) if eff_prices else 0.0,
+            "p99": round(pct(eff_prices, 0.99), 3) if eff_prices else 0.0,
             "min": round(min(eff_prices), 3) if eff_prices else 0.0,
             "max": round(max(eff_prices), 3) if eff_prices else 0.0,
             "count": len(eff_prices),
         },
-        "tipGweiApprox": {
+                "tipGweiApprox": {
             "p50": round(median(tips), 3) if tips else 0.0,
             "p95": round(pct(tips, 0.95), 3) if tips else 0.0,
+            "p99": round(pct(tips, 0.99), 3) if tips else 0.0,
             "min": round(min(tips), 3) if tips else 0.0,
             "max": round(max(tips), 3) if tips else 0.0,
             "count": len(tips),
